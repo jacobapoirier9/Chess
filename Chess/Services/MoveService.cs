@@ -190,7 +190,7 @@ public class MoveService : IMoveService
             to.Piece is null;
     }
 
-    public void Move(GridItem[,] grid, ExpandedMove move)
+    public void ExecuteMove(GridItem[,] grid, ExpandedMove move)
     {
         if (CanMove(grid, move))
         {

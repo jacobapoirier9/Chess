@@ -8,5 +8,5 @@ public interface IMoveService
 
     public bool CanMove(GridItem[,] grid, ExpandedMove move);
 
-    public void Move(GridItem[,] grid, ExpandedMove move);
+    public void ExecuteMove(GridItem[,] grid, ExpandedMove move);
 }
