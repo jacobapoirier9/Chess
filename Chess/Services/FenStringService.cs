@@ -4,6 +4,7 @@ public class FenStringService : IFenStringService
 {
     private const char _segmentSeparator = ' ';
     private const char _piecePlacementRowSeparator = '/';
+    private const char _emptyField = '-';
 
     public FenObject Parse(string fen)
     {
@@ -68,6 +69,9 @@ public class FenStringService : IFenStringService
 
     public List<CastlingRight> ParseCastlingRights(string castlingRightsSegment)
     {
+        if (castlingRightsSegment == _emptyField.ToString())
+            return null;
+
         var castlingRights = castlingRightsSegment.Select(next => new CastlingRight
         {
             CharacterCode = char.ToUpper(next),
