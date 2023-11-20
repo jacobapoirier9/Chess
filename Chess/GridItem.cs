@@ -4,7 +4,7 @@ namespace Chess;
 
 public class GridItem
 {
-    public override string ToString() => $"{(int)Player}{CharacterCode} ({Row}, {Column})";
+    public override string ToString() => $"{Player} {CharacterCode} ({Row}, {Column})";
 
     public char? CharacterCode { get; set; }
 

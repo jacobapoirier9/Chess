@@ -9,4 +9,6 @@ public interface IFenStringService
     public Player ParseActiveColor(string activeColorSegment);
 
     public List<CastlingRight> ParseCastlingRights(string castlingRightsSegment);
+
+    public (int row, int column)? ParseEnPassantTarget(string possibleEnPassantTargetsSegment);
 }

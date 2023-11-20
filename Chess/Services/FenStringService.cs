@@ -1,4 +1,6 @@
-﻿namespace Chess.Services;
+﻿using System.ComponentModel;
+
+namespace Chess.Services;
 
 public class FenStringService : IFenStringService
 {
@@ -14,7 +16,8 @@ public class FenStringService : IFenStringService
         {
             Grid = ParsePiecePlacement(segments[0]),
             ActivePlayer = ParseActiveColor(segments[1]),
-            CastlingRights = ParseCastlingRights(segments[2])
+            CastlingRights = ParseCastlingRights(segments[2]),
+            PossibleEnPassantTarget = ParseEnPassantTarget(segments[3]),
         };
     }
 
@@ -79,5 +82,50 @@ public class FenStringService : IFenStringService
         }).ToList();
 
         return castlingRights;
+    }
+
+    public (int row, int column)? ParseEnPassantTarget(string possibleEnPassantTargetsSegment)
+    {
+        if (possibleEnPassantTargetsSegment == _emptyField.ToString())
+            return null;
+
+        var coords = ParseLetterNumberToNumberNumber(possibleEnPassantTargetsSegment);
+        return coords;
+    }
+
+    // TODO: There's got to be a better way of handling this..
+    /// <summary>
+    /// Convert FEN string friendly coordinate to something the chess engine can use.
+    /// </summary>
+    private (int row, int column) ParseLetterNumberToNumberNumber(string letterNumber)
+    {
+        var columnLetter = Convert.ToChar(letterNumber[0]);
+        var rowLetter = Convert.ToChar(letterNumber[1]);
+
+        var columnNumber = columnLetter switch
+        {
+            'a' => 0,
+            'b' => 1,
+            'c' => 2,
+            'd' => 3,
+            'e' => 4,
+            'f' => 5,
+            'g' => 6,
+            'h' => 7
+        };
+
+        var rowNumber = rowLetter switch
+        {
+            '8' => 0,
+            '7' => 1,
+            '6' => 2,
+            '5' => 3,
+            '4' => 4,
+            '3' => 5,
+            '2' => 6,
+            '1' => 7
+        };
+
+        return (rowNumber, columnNumber);
     }
 }
