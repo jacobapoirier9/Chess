@@ -1,8 +1,4 @@
-﻿using Chess.Enums;
-using Chess.Model;
-using System.Drawing;
-
-namespace Chess.Services;
+﻿namespace Chess.Services;
 
 public class ConsoleDisplayService : IDisplayService
 {
@@ -14,7 +10,7 @@ public class ConsoleDisplayService : IDisplayService
         _moveService = moveService;
     }
 
-    public void Send(GridItem[,] grid)
+    private void SendCore(GridItem[,] grid, GridItem item, List<Move> moves)
     {
         if (!_preserveConsole)
             Console.Clear();
@@ -29,16 +25,26 @@ public class ConsoleDisplayService : IDisplayService
             Console.BackgroundColor = Constants.DefaultConsoleBackgroundColor;
             Console.Write(" {0} |", row);
 
-            for (var col = 0; col < Grid.Size; col++)
+            for (var column = 0; column < Grid.Size; column++)
             {
-                var item = grid[row, col];
+                var target = grid.GetItemAtPosition(row, column);
 
-                Console.BackgroundColor = item.BackgroundConsoleColor;
+                Console.BackgroundColor = ConsoleColor.Black;
 
-                if (item.Piece is not null)
+                if (item is not null && moves is not null)
                 {
-                    Console.Write(item.Piece.CharacterCode);
-                    Console.Write((int)item.Piece.Player);
+                    if (item.Row == row && item.Column == column)
+                        Console.BackgroundColor = ConsoleColor.Green;
+
+                    var move = moves.SingleOrDefault(m => m.ToRow == row && m.ToColumn == column);
+                    if (move is not null)
+                        Console.BackgroundColor = move.IsAttack ? ConsoleColor.Red : ConsoleColor.Blue;
+                }
+
+                if (target.CharacterCode is not null)
+                {
+                    Console.Write(target.CharacterCode);
+                    Console.Write((int)target.Player);
                     Console.Write(Constants.DefaultDisplayCharacter);
                 }
                 else
@@ -59,35 +65,9 @@ public class ConsoleDisplayService : IDisplayService
         }
     }
 
-    public void ResetHighlights(GridItem[,] grid, ConsoleColor color = Constants.DefaultConsoleBackgroundColor)
-    {
-        for (var row = 0; row < Grid.Size; row++)
-        {
-            for (var col = 0; col < Grid.Size; col++)
-            {
-                grid[row, col].BackgroundConsoleColor = color;
-            }
-        }
-    }
+    public void Send(GridItem[,] grid) => 
+        SendCore(grid, null, null);
 
-    public void ApplyMoveHighlights(GridItem[,] grid, int row, int col)
-    {
-        ResetHighlights(grid);
-
-        var moves = _moveService.GetExpandedMoves(grid, row, col);
-        var item = grid.GetItemAtPosition(row, col);
-
-        item.BackgroundConsoleColor = ConsoleColor.Green;
-
-        foreach (var move in moves)
-        {
-            var target = grid.GetItemAtPosition(move.TargetRow, move.TargetCol);
-            if (move.MoveType == MoveType.PassiveOnly)
-                target.BackgroundConsoleColor = ConsoleColor.Blue;
-            else if (move.MoveType == MoveType.AttackOnly)
-                target.BackgroundConsoleColor = ConsoleColor.Red;
-            else
-                target.BackgroundConsoleColor = ConsoleColor.Black;
-        }
-    }
+    public void Send(GridItem[,] grid, int row, int column) => 
+        SendCore(grid, grid.GetItemAtPosition(row, column), _moveService.GenerateMoves(grid, row, column));
 }

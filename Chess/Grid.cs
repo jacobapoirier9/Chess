@@ -1,8 +1,4 @@
-﻿using Chess.Enums;
-using Chess.Model;
-using Chess.Model.Pieces;
-
-namespace Chess;
+﻿namespace Chess;
 
 public static class Grid
 {
@@ -18,17 +14,16 @@ public static class Grid
         var queen = Constants.QueenDisplayCharacter;
         var king = Constants.KingDisplayCharacter;
         var pawn = Constants.PawnDisplayCharacter;
-        var blank = Constants.DefaultDisplayCharacter;
 
-        var temp = new char[,]
+        var temp = new char?[,]
         {
             { rook, knight, bishop, queen, king, bishop, knight, rook },
             { pawn, pawn, pawn, pawn, pawn, pawn, pawn, pawn },
 
-            { blank, blank, blank, blank, blank, blank, blank, blank },
-            { blank, blank, blank, blank, blank, blank, blank, blank },
-            { blank, blank, blank, blank, blank, blank, blank, blank },
-            { blank, blank, blank, blank, blank, blank, blank, blank },
+            { null, null, null, null, null, null, null, null },
+            { null, null, null, null, null, null, null, null },
+            { null, null, null, null, null, null, null, null },
+            { null, null, null, null, null, null, null, null },
 
             { pawn, pawn, pawn, pawn, pawn, pawn, pawn, pawn },
             { rook, knight, bishop, queen, king, bishop, knight, rook },
@@ -36,73 +31,57 @@ public static class Grid
 
         for (var row = 0; row < Size; row++)
         {
-            for (var col = 0; col < Size; col++)
+            for (var column = 0; column < Size; column++)
             {
-                var item = new GridItem();
+                var item = new GridItem() { Row = row, Column = column, CharacterCode = temp[row, column] };
 
-                Player? player;
                 if (row == 0 || row == 1)
-                {
-                    player = Player.White;
-                }
+                    item.Player = Player.White;
                 else if (row == 6 || row == 7)
-                {
-                    player = Player.Black;
-                }
-                else
-                {
-                    grid[row, col] = item;
-                    continue;
-                }
+                    item.Player = Player.Black;
 
-                item.Piece = temp[row, col] switch
-                {
-                    Constants.RookDisplayCharacter => new Rook(player.Value),
-                    Constants.KnightDisplayCharacter => new Knight(player.Value),
-                    Constants.BishopDisplayCharacter => new Bishop(player.Value),
-                    Constants.QueenDisplayCharacter => new Queen(player.Value),
-                    Constants.KingDisplayCharacter => new King(player.Value),
-                    Constants.PawnDisplayCharacter => new Pawn(player.Value),
-
-                    _ => throw new IndexOutOfRangeException(temp[row, col].ToString())
-                };
-
-                grid[row, col] = item;
+                grid[row, column] = item;
             }
         }
 
         return grid;
     }
 
-    public static void ForceSwap<T>(this T[,] array, int fromRow, int fromCol, int toRow, int toCol)
+    public static void ForceSwap(this GridItem[,] array, int fromRow, int fromColumn, int toRow, int toColumn)
     {
-        var from = array[fromRow, fromCol];
-        var to = array[toRow, toCol];
+        var from = array[fromRow, fromColumn];
+        var to = array[toRow, toColumn];
 
-        array[fromRow, fromCol] = to;
-        array[toRow, toCol] = from;
+        array[fromRow, fromColumn] = to;
+        array[toRow, toColumn] = from;
+
+        from.Row = toRow;
+        from.Column = toColumn;
+
+        to.Row = fromRow;
+        to.Column = fromColumn;
     }
 
-    public static T GetItemAtPositionOrDefault<T>(this T[,] array, int row, int col)
+    public static T GetItemAtPositionOrDefault<T>(this T[,] array, int row, int column)
     {
-        if (array.CheckValidPosition(row, col))
-            return array[row, col];
+        if (array.CheckValidPosition(row, column))
+            return array[row, column];
 
         return default;
     }
 
-    public static T GetItemAtPosition<T>(this T[,] array, int row, int col)
+    public static T GetItemAtPosition<T>(this T[,] array, int row, int column)
     {
-        var item = GetItemAtPositionOrDefault(array, row, col);
+        var item = GetItemAtPositionOrDefault(array, row, column);
 
         if (item is null)
-            throw new IndexOutOfRangeException($"Invalid grid coordinates ({row}, {col})");
+            throw new IndexOutOfRangeException($"Invalid grid coordinates ({row}, {column})");
 
         return item;
     }
 
-    public static bool CheckValidPosition<T>(this T[,] array, int row, int col) =>
-        0 <= row && row < array.GetLength(0) && 0 <= col && col < array.GetLength(1);
+    public static bool CheckValidPosition<T>(this T[,] array, int row, int column) =>
+        0 <= row && row < array.GetLength(0) && 0 <= column && column < array.GetLength(1);
 
     public static Player GetOtherPlayer(this Player player)
     {

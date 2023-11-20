@@ -1,6 +1,4 @@
-﻿using Chess.Enums;
-
-namespace Chess;
+﻿namespace Chess;
 
 public static class Helper
 {
