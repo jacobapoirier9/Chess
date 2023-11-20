@@ -9,4 +9,8 @@ public class FenObject
     public List<CastlingRight> CastlingRights { get; set; }
 
     public Point? PossibleEnPassantTarget { get; set; }
+
+    public int HalfMoveClock { get; set; }
+
+    public int FullMoveNumber { get; set; }
 }

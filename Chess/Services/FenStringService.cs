@@ -18,6 +18,8 @@ public class FenStringService : IFenStringService
             ActivePlayer = ParseActiveColor(segments[1]),
             CastlingRights = ParseCastlingRights(segments[2]),
             PossibleEnPassantTarget = ParseEnPassantTarget(segments[3]),
+            HalfMoveClock = ParseHalfMoveClock(segments[4]),
+            FullMoveNumber = ParseFullMoveNumber(segments[5])
         };
     }
 
@@ -91,6 +93,18 @@ public class FenStringService : IFenStringService
 
         var coords = ParseLetterNumberToNumberNumber(possibleEnPassantTargetsSegment);
         return coords;
+    }
+
+    public int ParseHalfMoveClock(string halfmoveClockSegment)
+    {
+        var value = int.Parse(halfmoveClockSegment);
+        return value;
+    }
+
+    public int ParseFullMoveNumber(string fullmoveNumberSegment)
+    {
+        var value = int.Parse(fullmoveNumberSegment);
+        return value;
     }
 
     // TODO: There's got to be a better way of handling this..

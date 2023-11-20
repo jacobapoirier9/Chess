@@ -11,4 +11,8 @@ public interface IFenStringService
     public List<CastlingRight> ParseCastlingRights(string castlingRightsSegment);
 
     public Point? ParseEnPassantTarget(string possibleEnPassantTargetsSegment);
+
+    public int ParseHalfMoveClock(string halfmoveClockSegment);
+
+    public int ParseFullMoveNumber(string fullmoveNumberSegment);
 }
