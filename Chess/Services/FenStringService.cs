@@ -84,7 +84,7 @@ public class FenStringService : IFenStringService
         return castlingRights;
     }
 
-    public (int row, int column)? ParseEnPassantTarget(string possibleEnPassantTargetsSegment)
+    public Point? ParseEnPassantTarget(string possibleEnPassantTargetsSegment)
     {
         if (possibleEnPassantTargetsSegment == _emptyField.ToString())
             return null;
@@ -97,7 +97,7 @@ public class FenStringService : IFenStringService
     /// <summary>
     /// Convert FEN string friendly coordinate to something the chess engine can use.
     /// </summary>
-    private (int row, int column) ParseLetterNumberToNumberNumber(string letterNumber)
+    private Point ParseLetterNumberToNumberNumber(string letterNumber)
     {
         var columnLetter = Convert.ToChar(letterNumber[0]);
         var rowLetter = Convert.ToChar(letterNumber[1]);
@@ -111,7 +111,9 @@ public class FenStringService : IFenStringService
             'e' => 4,
             'f' => 5,
             'g' => 6,
-            'h' => 7
+            'h' => 7,
+
+            _ => throw new IndexOutOfRangeException()
         };
 
         var rowNumber = rowLetter switch
@@ -123,9 +125,11 @@ public class FenStringService : IFenStringService
             '4' => 4,
             '3' => 5,
             '2' => 6,
-            '1' => 7
+            '1' => 7,
+
+            _ => throw new IndexOutOfRangeException()
         };
 
-        return (rowNumber, columnNumber);
+        return new Point(rowNumber, columnNumber);
     }
 }

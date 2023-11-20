@@ -59,28 +59,28 @@ public class GameService
 
         var grid = fen.Grid;
 
-        _displayService.Send(grid, 1, 1);
+        _displayService.Send(grid, new Point(1, 1));
 
-        Grid.ForceSwap(grid, 6, 1, 2, 2);
-        Grid.ForceSwap(grid, 6, 3, 2, 4);
+        Grid.ForceSwap(grid, new Point(6, 1), new Point(2, 2));
+        Grid.ForceSwap(grid, new Point(6, 3), new Point(2, 4));
 
-        _displayService.Send(grid, 1, 3);
+        _displayService.Send(grid, new Point(1, 3));
 
-        _displayService.Send(grid, 1, 2);
+        _displayService.Send(grid, new Point(1, 2));
 
-        _displayService.Send(grid, 7, 1);
+        _displayService.Send(grid, new Point(7, 1));
 
-        Grid.ForceSwap(grid, 7, 5, 4, 4);
-        _displayService.Send(grid, 4, 4);
-        Grid.ForceSwap(grid, 4, 4, 7, 5);
+        Grid.ForceSwap(grid, new Point(7, 5), new Point(4, 4));
+        _displayService.Send(grid, new Point(4, 4));
+        Grid.ForceSwap(grid, new Point(4, 4), new Point(7, 5));
 
-        _displayService.Send(grid, 7, 2);
+        _displayService.Send(grid, new Point(7, 2));
 
-        Grid.ForceSwap(grid, 7, 7, 4, 0);
-        _displayService.Send(grid, 4, 0);
+        Grid.ForceSwap(grid, new Point(7, 7), new Point(4, 0));
+        _displayService.Send(grid, new Point(4, 0));
 
-        Grid.ForceSwap(grid, 1, 7, 2, 7);
-        _displayService.Send(grid, 7, 2);
+        Grid.ForceSwap(grid, new Point(1, 7), new Point(2, 7));
+        _displayService.Send(grid, new Point(7, 2));
     }
 
     public void Start()

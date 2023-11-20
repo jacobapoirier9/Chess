@@ -2,5 +2,5 @@
 
 public interface IMoveService
 {
-    public List<Move> GenerateMoves(GridItem[,] grid, int row, int col);
+    public List<Move> GenerateMoves(GridItem[,] grid, Point point);
 }

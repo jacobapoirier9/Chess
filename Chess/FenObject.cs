@@ -8,5 +8,5 @@ public class FenObject
 
     public List<CastlingRight> CastlingRights { get; set; }
 
-    public (int Row, int Column)? PossibleEnPassantTarget { get; set; }
+    public Point? PossibleEnPassantTarget { get; set; }
 }

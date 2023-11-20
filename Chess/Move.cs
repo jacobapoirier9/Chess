@@ -2,15 +2,11 @@
 
 public class Move
 {
-    public override string ToString() => $"({FromRow}, {FromColumn}) -> ({ToRow}, {ToColumn})";
+    public override string ToString() => $"({From.Row}, {From.Column}) -> ({To.Column}, {To.Column})";
 
-    public int FromRow { get; set; }
+    public Point From { get; set; }
 
-    public int FromColumn { get; set; }
-
-    public int ToRow { get; set; }
-
-    public int ToColumn { get; set; }
+    public Point To { get; set; }
 
     public bool IsAttack { get; set; }
 }

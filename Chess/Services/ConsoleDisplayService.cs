@@ -27,7 +27,7 @@ public class ConsoleDisplayService : IDisplayService
 
             for (var column = 0; column < Constants.GridSize; column++)
             {
-                var target = grid.GetItemAtPositionOrDefault(row, column);
+                var target = grid.GetItemAtPositionOrDefault(new Point(row, column));
 
                 Console.BackgroundColor = ConsoleColor.Black;
 
@@ -36,7 +36,7 @@ public class ConsoleDisplayService : IDisplayService
                     if (item.Row == row && item.Column == column)
                         Console.BackgroundColor = ConsoleColor.Green;
 
-                    var move = moves.SingleOrDefault(m => m.ToRow == row && m.ToColumn == column);
+                    var move = moves.SingleOrDefault(m => m.To.Row == row && m.To.Column == column);
                     if (move is not null)
                         Console.BackgroundColor = move.IsAttack ? ConsoleColor.Red : ConsoleColor.Blue;
                 }
@@ -68,6 +68,6 @@ public class ConsoleDisplayService : IDisplayService
     public void Send(GridItem[,] grid) => 
         SendCore(grid, null, null);
 
-    public void Send(GridItem[,] grid, int row, int column) => 
-        SendCore(grid, grid.GetItemAtPosition(row, column), _moveService.GenerateMoves(grid, row, column));
+    public void Send(GridItem[,] grid, Point point) => 
+        SendCore(grid, grid.GetItemAtPosition(point), _moveService.GenerateMoves(grid, point));
 }

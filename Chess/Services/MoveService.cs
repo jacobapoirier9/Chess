@@ -2,9 +2,9 @@
 
 public class MoveService : IMoveService
 {
-    public List<Move> GenerateMoves(GridItem[,] grid, int row, int col)
+    public List<Move> GenerateMoves(GridItem[,] grid, Point point)
     {
-        var item = grid.GetItemAtPosition(row, col);
+        var item = grid.GetItemAtPosition(point);
 
         var moves = new List<Move>();
 
@@ -45,19 +45,19 @@ public class MoveService : IMoveService
             var targetRow = item.Row + (deltaRow * i);
             var targetCol = item.Column + (deltaCol * i);
 
-            if (grid.CheckValidPosition(targetRow, targetCol))
+            var targetPoint = new Point(targetRow, targetCol);
+
+            if (grid.CheckValidPosition(targetPoint))
             {
-                var target = grid.GetItemAtPositionOrDefault(targetRow, targetCol);
+                var target = grid.GetItemAtPositionOrDefault(targetPoint);
 
                 if (target is not null && target.Player == item.Player)
                     break;
 
                 var move = new Move
                 {
-                    FromRow = item.Row,
-                    FromColumn = item.Column,
-                    ToRow = targetRow,
-                    ToColumn = targetCol,
+                    From = new Point(item.Row, item.Column),
+                    To = new Point(targetRow, targetCol),
                 };
 
                 if (target is not null && target.Player == item.Player?.GetOtherPlayer())

@@ -1,48 +1,51 @@
-﻿namespace Chess;
+﻿using System.Data.Common;
+
+namespace Chess;
 
 public static class Grid
 {
-    public static void ForceSwap(this GridItem[,] array, int fromRow, int fromColumn, int toRow, int toColumn)
+    public static void ForceSwap(this GridItem[,] grid, Point fromPoint, Point toPoint)
     {
-        var from = array[fromRow, fromColumn];
-        var to = array[toRow, toColumn];
+        var from = grid[fromPoint.Row, fromPoint.Column];
+        var to = grid[toPoint.Row, toPoint.Column];
 
-        array[fromRow, fromColumn] = to;
-        array[toRow, toColumn] = from;
+        grid[fromPoint.Row, fromPoint.Column] = to;
+        grid[toPoint.Row, toPoint.Column] = from;
 
         if (from is not null)
         {
-            from.Row = toRow;
-            from.Column = toColumn;
+            from.Row = toPoint.Row;
+            from.Column = toPoint.Column;
         }
 
         if (to is not null)
         {
-            to.Row = fromRow;
-            to.Column = fromColumn;
+            to.Row = fromPoint.Row;
+            to.Column = fromPoint.Column;
         }
     }
 
-    public static T GetItemAtPositionOrDefault<T>(this T[,] array, int row, int column)
+
+    public static T GetItemAtPositionOrDefault<T>(this T[,] array, Point point)
     {
-        if (array.CheckValidPosition(row, column))
-            return array[row, column];
+        if (array.CheckValidPosition(point))
+            return array[point.Row, point.Column];
 
         return default;
     }
 
-    public static T GetItemAtPosition<T>(this T[,] array, int row, int column)
+    public static T GetItemAtPosition<T>(this T[,] array, Point point)
     {
-        var item = GetItemAtPositionOrDefault(array, row, column);
+        var item = GetItemAtPositionOrDefault(array, point);
 
         if (item is null)
-            throw new IndexOutOfRangeException($"Invalid grid coordinates ({row}, {column})");
+            throw new IndexOutOfRangeException($"Invalid grid coordinates ({point.Row}, {point.Column})");
 
         return item;
     }
 
-    public static bool CheckValidPosition<T>(this T[,] array, int row, int column) =>
-        0 <= row && row < array.GetLength(0) && 0 <= column && column < array.GetLength(1);
+    public static bool CheckValidPosition<T>(this T[,] array, Point point) =>
+        0 <= point.Row && point.Row < array.GetLength(0) && 0 <= point.Column && point.Column < array.GetLength(1);
 
     public static Player GetOtherPlayer(this Player player)
     {

@@ -10,5 +10,5 @@ public interface IFenStringService
 
     public List<CastlingRight> ParseCastlingRights(string castlingRightsSegment);
 
-    public (int row, int column)? ParseEnPassantTarget(string possibleEnPassantTargetsSegment);
+    public Point? ParseEnPassantTarget(string possibleEnPassantTargetsSegment);
 }
