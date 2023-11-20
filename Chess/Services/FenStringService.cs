@@ -43,9 +43,11 @@ public class FenStringService : IFenStringService
             var line = lines[row];
 
             var column = 0;
+            var lineIndex = 0;
+
             while (column < Constants.GridSize)
             {
-                var next = Convert.ToChar(line.ElementAt(column));
+                var next = Convert.ToChar(line.ElementAt(lineIndex++));
 
                 if (char.IsNumber(next))
                 {
