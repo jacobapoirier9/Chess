@@ -8,18 +8,27 @@ public class FenStringService : IFenStringService
     private const char _piecePlacementRowSeparator = '/';
     private const char _emptyField = '-';
 
+    private string GetSegmentAndValidateExists(IEnumerable<string> items, int index, string missingSegment)
+    {
+        var item = items.ElementAtOrDefault(index);
+        if (item is null)
+            throw new FormatException($"An error occurred while parsing the FEN string. Invalid {missingSegment}");
+
+        return item;
+    }
+
     public FenObject Parse(string fen)
     {
         var segments = fen.Split(_segmentSeparator);
 
         return new FenObject
         {
-            Grid = ParsePiecePlacement(segments[0]),
-            ActivePlayer = ParseActiveColor(segments[1]),
-            CastlingRights = ParseCastlingRights(segments[2]),
-            PossibleEnPassantTarget = ParseEnPassantTarget(segments[3]),
-            HalfMoveClock = ParseHalfMoveClock(segments[4]),
-            FullMoveNumber = ParseFullMoveNumber(segments[5])
+            Grid = ParsePiecePlacement(GetSegmentAndValidateExists(segments, 0, nameof(FenObject.Grid))),
+            ActivePlayer = ParseActiveColor(GetSegmentAndValidateExists(segments, 1, nameof(FenObject.ActivePlayer))),
+            CastlingRights = ParseCastlingRights(GetSegmentAndValidateExists(segments, 2, nameof(FenObject.CastlingRights))),
+            PossibleEnPassantTarget = ParseEnPassantTarget(GetSegmentAndValidateExists(segments, 3, nameof(FenObject.PossibleEnPassantTarget))),
+            HalfMoveClock = ParseHalfMoveClock(GetSegmentAndValidateExists(segments, 4, nameof(FenObject.HalfMoveClock))),
+            FullMoveNumber = ParseFullMoveNumber(GetSegmentAndValidateExists(segments, 5, nameof(FenObject.FullMoveNumber))),
         };
     }
 
