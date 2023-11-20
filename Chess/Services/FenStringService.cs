@@ -12,7 +12,8 @@ public class FenStringService : IFenStringService
         return new FenObject
         {
             Grid = ParsePiecePlacement(segments[0]),
-            ActivePlayer = ParseActiveColor(segments[1])
+            ActivePlayer = ParseActiveColor(segments[1]),
+            CastlingRights = ParseCastlingRights(segments[2])
         };
     }
 
@@ -63,5 +64,16 @@ public class FenStringService : IFenStringService
         };
 
         return player;
+    }
+
+    public List<CastlingRight> ParseCastlingRights(string castlingRightsSegment)
+    {
+        var castlingRights = castlingRightsSegment.Select(next => new CastlingRight
+        {
+            CharacterCode = char.ToUpper(next),
+            Player = char.IsLower(next) ? Player.Black : Player.White
+        }).ToList();
+
+        return castlingRights;
     }
 }
