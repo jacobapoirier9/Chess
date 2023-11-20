@@ -5,13 +5,18 @@ public class FenStringService : IFenStringService
     private const char _segmentSeparator = ' ';
     private const char _piecePlacementRowSeparator = '/';
 
-    public void Parse(string fen)
+    public FenObject Parse(string fen)
     {
         var segments = fen.Split(_segmentSeparator);
-        ParseGrid(segments[0]);
+
+        return new FenObject
+        {
+            Grid = ParsePiecePlacement(segments[0]),
+            ActivePlayer = ParseActiveColor(segments[1])
+        };
     }
 
-    public GridItem[,] ParseGrid(string piecePlacementSegment)
+    public GridItem[,] ParsePiecePlacement(string piecePlacementSegment)
     {
         var grid = new GridItem[Constants.GridSize, Constants.GridSize];
 
@@ -45,5 +50,18 @@ public class FenStringService : IFenStringService
         }
 
         return grid;
+    }
+
+    public Player ParseActiveColor(string activeColorSegment)
+    {
+        var player = Convert.ToChar(activeColorSegment) switch
+        {
+            'w' => Player.White,
+            'b' => Player.Black,
+
+            _ => throw new IndexOutOfRangeException()
+        };
+
+        return player;
     }
 }

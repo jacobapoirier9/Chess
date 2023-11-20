@@ -53,9 +53,11 @@ public class GameService
     [Surface("start-test")]
     public void StartTest()
     {
-        var input = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
+        var input = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b";
 
-        var grid = _fenStringService.ParseGrid(input);
+        var fen = _fenStringService.Parse(input);
+
+        var grid = fen.Grid;
 
         _displayService.Send(grid, 1, 1);
 

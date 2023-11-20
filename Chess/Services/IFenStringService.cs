@@ -2,7 +2,8 @@
 
 public interface IFenStringService
 {
-    public void Parse(string fen);
+    public FenObject Parse(string fen);
 
-    public GridItem[,] ParseGrid(string piecePlacementSegment);
+    public GridItem[,] ParsePiecePlacement(string piecePlacementSegment);
+    public Player ParseActiveColor(string activeColorSegment);
 }
