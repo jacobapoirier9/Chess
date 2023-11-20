@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Text;
 
 namespace Chess.Services;
 
@@ -154,5 +155,69 @@ public class FenStringService : IFenStringService
         };
 
         return new Point(rowNumber, columnNumber);
+    }
+
+    public string GeneratePiecePlacementSegment(GridItem[,] grid)
+    {
+        var lines = new List<string>();
+        for (var row = 0; row < grid.GetLength(0); row++)
+        {
+            var line = string.Empty;
+
+            for (var column = 0; column < grid.GetLength(1); column++)
+            {
+                var item = grid.GetItemAtPositionOrDefault(new Point(row, column));
+
+                if (item is null || item.CharacterCode is null || item.Player is null)
+                {
+                    if (line.Length > 0)
+                    {
+                        var next = line.Last();
+                        if (char.IsDigit(next))
+                        {
+                            var number = int.Parse(next.ToString());
+                            line = line.TrimEnd(Convert.ToChar(number.ToString()));
+
+                            number++;
+                            line += number.ToString();
+                        }
+                        else
+                        {
+                            line += "1";
+                        }
+                    }
+                    else
+                    {
+                        line += "1";
+                    }
+                }
+                else
+                {
+                    var next = item.Player switch
+                    {
+                        Player.Black => char.ToLower(item.CharacterCode.Value),
+                        Player.White => item.CharacterCode.Value,
+
+                        _ => throw new IndexOutOfRangeException()
+                    };
+
+                    line += next;
+                }
+            }
+
+            lines.Add(line);
+        }
+
+        return string.Join(_piecePlacementRowSeparator, lines);
+    }
+
+    public string Generate(FenObject fen)
+    {
+        var fenString = string.Join(_segmentSeparator, new string[]
+        {
+            GeneratePiecePlacementSegment(fen.Grid)
+        });
+
+        return fenString;
     }
 }

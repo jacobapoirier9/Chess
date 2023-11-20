@@ -57,6 +57,8 @@ public class GameService
 
         var fen = _fenStringService.Parse(input);
 
+        var fenString = (_fenStringService as FenStringService).GeneratePiecePlacementSegment(fen.Grid);
+
         var grid = fen.Grid;
 
         _displayService.Send(grid, new Point(1, 1));
@@ -80,6 +82,11 @@ public class GameService
         _displayService.Send(grid, new Point(4, 0));
 
         Grid.ForceSwap(grid, new Point(1, 7), new Point(2, 7));
+        _displayService.Send(grid, new Point(7, 2));
+
+        var test = (_fenStringService as FenStringService).GeneratePiecePlacementSegment(grid);
+        grid = _fenStringService.ParsePiecePlacement(test);
+
         _displayService.Send(grid, new Point(7, 2));
     }
 
