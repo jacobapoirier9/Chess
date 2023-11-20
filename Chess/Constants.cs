@@ -11,4 +11,6 @@ public static class Constants
     public const char DefaultDisplayCharacter = ' ';
 
     public const ConsoleColor DefaultConsoleBackgroundColor = ConsoleColor.Black;
+
+    public const int GridSize = 8;
 }

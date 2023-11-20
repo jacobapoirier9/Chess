@@ -17,6 +17,8 @@ public static class Program
         var client = Client.Create()
             .AddServices(services =>
             {
+                services.AddSingleton<IFenStringService, FenStringService>();
+
                 services.AddSingleton<IPlayerOne, ConsoleInputPlayer>();
                 services.AddSingleton<IPlayerTwo, ConsoleInputPlayer>();
                 //services.AddSingleton<IPlayerService, PlayerService>();
@@ -37,6 +39,7 @@ public class GameService
 
     private readonly IDisplayService _displayService;
     private readonly IMoveService _moveService;
+    private readonly IFenStringService _fenStringService;
 
     public GameService(IServiceProvider serviceProvider)
     {
@@ -44,12 +47,15 @@ public class GameService
 
         _displayService = _serviceProvider.GetRequiredService<IDisplayService>();
         _moveService = _serviceProvider.GetRequiredService<IMoveService>();
+        _fenStringService = _serviceProvider.GetRequiredService<IFenStringService>();
     }
 
     [Surface("start-test")]
     public void StartTest()
     {
-        var grid = Grid.Create();
+        var input = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR";
+
+        var grid = _fenStringService.ParseGrid(input);
 
         _displayService.Send(grid, 1, 1);
 

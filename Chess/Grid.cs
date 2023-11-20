@@ -2,51 +2,6 @@
 
 public static class Grid
 {
-    public const int Size = 8;
-    
-    public static GridItem[,] Create()
-    {
-        var grid = new GridItem[Size, Size];
-
-        var rook = Constants.RookDisplayCharacter;
-        var knight = Constants.KnightDisplayCharacter;
-        var bishop = Constants.BishopDisplayCharacter;
-        var queen = Constants.QueenDisplayCharacter;
-        var king = Constants.KingDisplayCharacter;
-        var pawn = Constants.PawnDisplayCharacter;
-
-        var temp = new char?[,]
-        {
-            { rook, knight, bishop, queen, king, bishop, knight, rook },
-            { pawn, pawn, pawn, pawn, pawn, pawn, pawn, pawn },
-
-            { null, null, null, null, null, null, null, null },
-            { null, null, null, null, null, null, null, null },
-            { null, null, null, null, null, null, null, null },
-            { null, null, null, null, null, null, null, null },
-
-            { pawn, pawn, pawn, pawn, pawn, pawn, pawn, pawn },
-            { rook, knight, bishop, queen, king, bishop, knight, rook },
-        };
-
-        for (var row = 0; row < Size; row++)
-        {
-            for (var column = 0; column < Size; column++)
-            {
-                var item = new GridItem() { Row = row, Column = column, CharacterCode = temp[row, column] };
-
-                if (row == 0 || row == 1)
-                    item.Player = Player.White;
-                else if (row == 6 || row == 7)
-                    item.Player = Player.Black;
-
-                grid[row, column] = item;
-            }
-        }
-
-        return grid;
-    }
-
     public static void ForceSwap(this GridItem[,] array, int fromRow, int fromColumn, int toRow, int toColumn)
     {
         var from = array[fromRow, fromColumn];
@@ -55,11 +10,17 @@ public static class Grid
         array[fromRow, fromColumn] = to;
         array[toRow, toColumn] = from;
 
-        from.Row = toRow;
-        from.Column = toColumn;
+        if (from is not null)
+        {
+            from.Row = toRow;
+            from.Column = toColumn;
+        }
 
-        to.Row = fromRow;
-        to.Column = fromColumn;
+        if (to is not null)
+        {
+            to.Row = fromRow;
+            to.Column = fromColumn;
+        }
     }
 
     public static T GetItemAtPositionOrDefault<T>(this T[,] array, int row, int column)

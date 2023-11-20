@@ -20,14 +20,14 @@ public class ConsoleDisplayService : IDisplayService
         Console.WriteLine($"   | 0  1  2  3  4  5  6  7 ");
         Console.WriteLine($"---+------------------------");
 
-        for (var row = 0; row < Grid.Size; row++)
+        for (var row = 0; row < Constants.GridSize; row++)
         {
             Console.BackgroundColor = Constants.DefaultConsoleBackgroundColor;
             Console.Write(" {0} |", row);
 
-            for (var column = 0; column < Grid.Size; column++)
+            for (var column = 0; column < Constants.GridSize; column++)
             {
-                var target = grid.GetItemAtPosition(row, column);
+                var target = grid.GetItemAtPositionOrDefault(row, column);
 
                 Console.BackgroundColor = ConsoleColor.Black;
 
@@ -41,7 +41,7 @@ public class ConsoleDisplayService : IDisplayService
                         Console.BackgroundColor = move.IsAttack ? ConsoleColor.Red : ConsoleColor.Blue;
                 }
 
-                if (target.CharacterCode is not null)
+                if (target?.CharacterCode is not null)
                 {
                     Console.Write(target.CharacterCode);
                     Console.Write((int)target.Player);

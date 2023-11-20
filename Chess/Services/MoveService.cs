@@ -40,16 +40,16 @@ public class MoveService : IMoveService
 
     private void AddCalculatedMove(GridItem[,] grid, GridItem item, List<Move> moves, sbyte deltaRow, sbyte deltaCol, int? maxSlide, bool allowAttack)
     {
-        for (var i = 1; i <= (maxSlide ?? Grid.Size); i++)
+        for (var i = 1; i <= (maxSlide ?? Constants.GridSize); i++)
         {
             var targetRow = item.Row + (deltaRow * i);
             var targetCol = item.Column + (deltaCol * i);
 
             if (grid.CheckValidPosition(targetRow, targetCol))
             {
-                var target = grid.GetItemAtPosition(targetRow, targetCol);
+                var target = grid.GetItemAtPositionOrDefault(targetRow, targetCol);
 
-                if (target.Player == item.Player)
+                if (target is not null && target.Player == item.Player)
                     break;
 
                 var move = new Move
@@ -60,7 +60,7 @@ public class MoveService : IMoveService
                     ToColumn = targetCol,
                 };
 
-                if (target.Player == item.Player?.GetOtherPlayer())
+                if (target is not null && target.Player == item.Player?.GetOtherPlayer())
                 {
                     if (allowAttack)
                     {
