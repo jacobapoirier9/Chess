@@ -5,10 +5,6 @@ namespace Chess.Core;
 
 public class FenStringService : IFenStringService
 {
-    private const char _segmentSeparator = ' ';
-    private const char _piecePlacementRowSeparator = '/';
-    private const char _emptyField = '-';
-
     private string GetSegmentAndValidateExists(IEnumerable<string> items, int index, string missingSegment)
     {
         var item = items.ElementAtOrDefault(index);
@@ -20,7 +16,7 @@ public class FenStringService : IFenStringService
 
     public FenObject Parse(string fen)
     {
-        var segments = fen.Split(_segmentSeparator);
+        var segments = fen.Split(Constants.FenStringSegmentSeparator);
 
         return new FenObject
         {
@@ -37,7 +33,7 @@ public class FenStringService : IFenStringService
     {
         var grid = new GridItem[Constants.GridSize, Constants.GridSize];
 
-        var lines = piecePlacementSegment.Split(_piecePlacementRowSeparator);
+        var lines = piecePlacementSegment.Split(Constants.FenStringPiecePlacementLineSeparator);
         for (var row = 0; row < lines.Length; row++)
         {
             var line = lines[row];
@@ -86,7 +82,7 @@ public class FenStringService : IFenStringService
 
     public List<CastlingRight> ParseCastlingRights(string castlingRightsSegment)
     {
-        if (castlingRightsSegment == _emptyField.ToString())
+        if (castlingRightsSegment == Constants.FenStringEmptyFieldCharacter.ToString())
             return null;
 
         var castlingRights = castlingRightsSegment.Select(next => new CastlingRight
@@ -100,7 +96,7 @@ public class FenStringService : IFenStringService
 
     public Point? ParseEnPassantTarget(string possibleEnPassantTargetsSegment)
     {
-        if (possibleEnPassantTargetsSegment == _emptyField.ToString())
+        if (possibleEnPassantTargetsSegment == Constants.FenStringEmptyFieldCharacter.ToString())
             return null;
 
         var point = ParseLetterNumberToNumberNumber(possibleEnPassantTargetsSegment);
@@ -210,12 +206,12 @@ public class FenStringService : IFenStringService
             lines.Add(line);
         }
 
-        return string.Join(_piecePlacementRowSeparator, lines);
+        return string.Join(Constants.FenStringPiecePlacementLineSeparator, lines);
     }
 
     public string Generate(FenObject fen)
     {
-        var fenString = string.Join(_segmentSeparator, new string[]
+        var fenString = string.Join(Constants.FenStringSegmentSeparator, new string[]
         {
             GeneratePiecePlacementSegment(fen.Grid)
         });
