@@ -4,6 +4,9 @@ public class ConsoleDisplayService : IDisplayService
 {
     private static bool _preserveConsole = true;
 
+    private const ConsoleColor _defaultConsoleColor = ConsoleColor.Black;
+
+
     private readonly IMoveService _moveService;
     public ConsoleDisplayService(IMoveService moveService)
     {
@@ -15,14 +18,14 @@ public class ConsoleDisplayService : IDisplayService
         if (!_preserveConsole)
             Console.Clear();
 
-        Console.BackgroundColor = Constants.DefaultConsoleBackgroundColor;
+        Console.BackgroundColor = _defaultConsoleColor;
         Console.WriteLine();
         Console.WriteLine($"   | 0  1  2  3  4  5  6  7 ");
         Console.WriteLine($"---+------------------------");
 
         for (var row = 0; row < Constants.GridSize; row++)
         {
-            Console.BackgroundColor = Constants.DefaultConsoleBackgroundColor;
+            Console.BackgroundColor = _defaultConsoleColor;
             Console.Write(" {0} |", row);
 
             for (var column = 0; column < Constants.GridSize; column++)
@@ -53,7 +56,7 @@ public class ConsoleDisplayService : IDisplayService
                 }
             }
 
-            Console.BackgroundColor = Constants.DefaultConsoleBackgroundColor;
+            Console.BackgroundColor = _defaultConsoleColor;
             Console.WriteLine();
         }
 

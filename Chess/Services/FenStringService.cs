@@ -103,8 +103,8 @@ public class FenStringService : IFenStringService
         if (possibleEnPassantTargetsSegment == _emptyField.ToString())
             return null;
 
-        var coords = ParseLetterNumberToNumberNumber(possibleEnPassantTargetsSegment);
-        return coords;
+        var point = ParseLetterNumberToNumberNumber(possibleEnPassantTargetsSegment);
+        return point;
     }
 
     public int ParseHalfMoveClock(string halfmoveClockSegment)

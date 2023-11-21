@@ -38,14 +38,14 @@ public class MoveService : IMoveService
         return moves;
     }
 
-    private void AddCalculatedMove(GridItem[,] grid, GridItem item, List<Move> moves, sbyte deltaRow, sbyte deltaCol, int? maxSlide, bool allowAttack)
+    private void AddCalculatedMove(GridItem[,] grid, GridItem item, List<Move> moves, sbyte deltaRow, sbyte deltaColumn, int? maxSlide, bool allowAttack)
     {
         for (var i = 1; i <= (maxSlide ?? Constants.GridSize); i++)
         {
             var targetRow = item.Row + (deltaRow * i);
-            var targetCol = item.Column + (deltaCol * i);
+            var targetColumn = item.Column + (deltaColumn * i);
 
-            var targetPoint = new Point(targetRow, targetCol);
+            var targetPoint = new Point(targetRow, targetColumn);
 
             if (grid.CheckValidPosition(targetPoint))
             {
@@ -57,7 +57,7 @@ public class MoveService : IMoveService
                 var move = new Move
                 {
                     From = new Point(item.Row, item.Column),
-                    To = new Point(targetRow, targetCol),
+                    To = targetPoint,
                 };
 
                 if (target is not null && target.Player == item.Player?.GetOtherPlayer())
