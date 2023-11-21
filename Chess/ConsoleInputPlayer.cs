@@ -1,4 +1,5 @@
-﻿using CommandSurfacer.Services;
+﻿using Chess.Core;
+using CommandSurfacer.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Chess;

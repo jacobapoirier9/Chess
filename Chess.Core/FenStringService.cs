@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Text;
 
-namespace Chess.Services;
+namespace Chess.Core;
 
 public class FenStringService : IFenStringService
 {

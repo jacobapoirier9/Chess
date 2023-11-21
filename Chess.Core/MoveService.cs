@@ -1,4 +1,4 @@
-﻿namespace Chess.Services;
+﻿namespace Chess.Core;
 
 public class MoveService : IMoveService
 {
@@ -42,8 +42,8 @@ public class MoveService : IMoveService
     {
         for (var i = 1; i <= (maxSlide ?? Constants.GridSize); i++)
         {
-            var targetRow = item.Row + (deltaRow * i);
-            var targetColumn = item.Column + (deltaColumn * i);
+            var targetRow = item.Row + deltaRow * i;
+            var targetColumn = item.Column + deltaColumn * i;
 
             var targetPoint = new Point(targetRow, targetColumn);
 

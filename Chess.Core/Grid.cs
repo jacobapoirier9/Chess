@@ -1,6 +1,6 @@
 ﻿using System.Data.Common;
 
-namespace Chess;
+namespace Chess.Core;
 
 public static class Grid
 {
@@ -36,7 +36,7 @@ public static class Grid
 
     public static T GetItemAtPosition<T>(this T[,] array, Point point)
     {
-        var item = GetItemAtPositionOrDefault(array, point);
+        var item = array.GetItemAtPositionOrDefault(point);
 
         if (item is null)
             throw new IndexOutOfRangeException($"Invalid grid coordinates ({point.Row}, {point.Column})");

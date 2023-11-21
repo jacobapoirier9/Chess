@@ -1,4 +1,4 @@
-﻿namespace Chess;
+﻿namespace Chess.Core;
 
 public static class Helper
 {

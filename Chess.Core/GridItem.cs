@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Chess;
+namespace Chess.Core;
 
 public class GridItem
 {

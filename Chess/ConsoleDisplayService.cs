@@ -1,4 +1,6 @@
-﻿namespace Chess.Services;
+﻿using Chess.Core;
+
+namespace Chess;
 
 public class ConsoleDisplayService : IDisplayService
 {
@@ -68,9 +70,9 @@ public class ConsoleDisplayService : IDisplayService
         }
     }
 
-    public void Send(GridItem[,] grid) => 
+    public void Send(GridItem[,] grid) =>
         SendCore(grid, null, null);
 
-    public void Send(GridItem[,] grid, Point point) => 
+    public void Send(GridItem[,] grid, Point point) =>
         SendCore(grid, grid.GetItemAtPosition(point), _moveService.GenerateMoves(grid, point));
 }

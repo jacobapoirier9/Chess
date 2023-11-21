@@ -1,4 +1,4 @@
-﻿namespace Chess.Services;
+﻿namespace Chess.Core;
 
 public interface IFenStringService
 {

@@ -1,4 +1,4 @@
-﻿using Chess.Services;
+﻿using Chess.Core;
 using CommandSurfacer;
 using Microsoft.Extensions.DependencyInjection;
 
