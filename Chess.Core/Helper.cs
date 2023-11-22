@@ -21,4 +21,6 @@ public static class Helper
             return hash;
         }
     }
+
+    public static bool IsBetween(this int number, int low, int high) => low <= number && number <= high;
 }

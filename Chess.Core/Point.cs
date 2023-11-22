@@ -7,10 +7,10 @@ public struct Point
     private readonly int _row;
     private readonly int _column;
 
-    public Point(int row, int col)
+    public Point(int row, int column)
     {
         _row = row;
-        _column = col;
+        _column = column;
     }
 
     public int Row => _row;

@@ -16,4 +16,23 @@ public class ConsoleInputPlayer : IPlayer, IPlayerOne, IPlayerTwo
         _stringConverter = serviceProvider.GetRequiredService<IStringConverter>();
         _getInputs = new GetConsoleInput(_stringConverter);
     }
+
+    private Point GetNextPoint(string prompt)
+    {
+        while (true)
+        {
+            var input = _getInputs.GetInput(prompt);
+
+            var row = int.Parse(input.ElementAt(0).ToString());
+            var column = int.Parse(input.ElementAt(1).ToString());
+
+            if (row.IsBetween(0, Constants.GridSize - 1) && column.IsBetween(0, Constants.GridSize - 1))
+            {
+                return new Point(row, column);
+            }
+        }
+    }
+
+    public Point GetPieceSelectionPoint(FenObject fen) => GetNextPoint("Select which piece you would like to move (in format [RC]) >> ");
+    public Point GetPieceMovementSelectionPoint(FenObject fen) => GetNextPoint("Select which move you would like to take (in format [RC]) >> ");
 }

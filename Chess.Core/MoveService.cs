@@ -85,11 +85,11 @@ public class MoveService : IMoveService
         switch (item.Player)
         {
             case Player.Black:
-                AddCalculatedMove(grid, item, moves, -1, 0, 1, false);
+                AddCalculatedMove(grid, item, moves, 1, 0, 1, false);
                 break;
 
             case Player.White:
-                AddCalculatedMove(grid, item, moves, 1, 0, 1, false);
+                AddCalculatedMove(grid, item, moves, -1, 0, 1, false);
                 break;
         }
     }

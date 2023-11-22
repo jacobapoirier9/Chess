@@ -41,6 +41,9 @@ public class GameService
     private readonly IMoveService _moveService;
     private readonly IFenStringService _fenStringService;
 
+    private readonly IPlayerOne _playerOne;
+    private readonly IPlayerTwo _playerTwo;
+
     public GameService(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
@@ -48,6 +51,9 @@ public class GameService
         _displayService = _serviceProvider.GetRequiredService<IDisplayService>();
         _moveService = _serviceProvider.GetRequiredService<IMoveService>();
         _fenStringService = _serviceProvider.GetRequiredService<IFenStringService>();
+
+        _playerOne = _serviceProvider.GetRequiredService<IPlayerOne>();
+        _playerTwo = _serviceProvider.GetRequiredService<IPlayerTwo>();
     }
 
     [Surface("start-test")]
@@ -88,10 +94,34 @@ public class GameService
         grid = _fenStringService.ParsePiecePlacement(test);
 
         _displayService.Send(grid, new Point(7, 2));
+
+        GameLoop();
+        return;
+
     }
 
-    public void Start()
+    private void GameLoop()
     {
+        var input = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b - - 0 0";
+        var fen = _fenStringService.Parse(input);
 
+        while (true)
+        {
+            _displayService.Send(fen.Grid);
+
+            Console.WriteLine("Player 1 is up");
+            var playerOneSelected = fen.Grid.GetItemAtPosition(_playerOne.GetPieceSelectionPoint(fen));
+            _displayService.Send(fen.Grid, new Point(playerOneSelected.Row, playerOneSelected.Column));
+
+            var playerOneMoveTo = fen.Grid.GetItemAtPosition(_playerTwo.GetPieceMovementSelectionPoint(fen));
+
+            Console.WriteLine("Player 2 is up");
+            var playerTwoSelected = fen.Grid.GetItemAtPosition(_playerOne.GetPieceSelectionPoint(fen));
+            _displayService.Send(fen.Grid, new Point(playerTwoSelected.Row, playerTwoSelected.Column));
+
+            var playerTwoMoveTo = fen.Grid.GetItemAtPosition(_playerTwo.GetPieceMovementSelectionPoint(fen));
+
+            break;
+        }
     }
 }
