@@ -2,44 +2,45 @@
 
 public class MoveService : IMoveService
 {
-    public List<Move> GenerateMoves(GridItem[,] grid, Point point)
+    public List<Move> GenerateMoves(FenObject fen, Point point)
     {
-        var item = grid.GetItemAtPosition(point);
+        var item = fen.Grid.GetItemAtPosition(point);
 
         var moves = new List<Move>();
 
         switch (item.CharacterCode)
         {
             case Constants.PawnDisplayCharacter:
-                AddPawnMoves(grid, item, point, moves);
+                AddPawnMoves(fen, item, point, moves);
                 break;
 
             case Constants.KingDisplayCharacter:
-                AddKingMoves(grid, item, point, moves);
+                AddKingMoves(fen, item, point, moves);
                 break;
 
             case Constants.QueenDisplayCharacter:
-                AddQueenMoves(grid, item, point, moves);
+                AddQueenMoves(fen, item, point, moves);
                 break;
 
             case Constants.BishopDisplayCharacter:
-                AddBishopMoves(grid, item, point, moves);
+                AddBishopMoves(fen, item, point, moves);
                 break;
 
             case Constants.KnightDisplayCharacter:
-                AddKnightMoves(grid, item, point, moves);
+                AddKnightMoves(fen, item, point, moves);
                 break;
 
             case Constants.RookDisplayCharacter:
-                AddRookMoves(grid, item, point, moves);
+                AddRookMoves(fen, item, point, moves);
                 break;
         }
 
         return moves;
     }
 
-    private void AddCalculatedMove(GridItem[,] grid, GridItem item, Point point, List<Move> moves, sbyte deltaRow, sbyte deltaColumn, int? maxSlide, bool allowAttack)
+    private void AddCalculatedMove(FenObject fen, GridItem item, Point point, List<Move> moves, sbyte deltaRow, sbyte deltaColumn, int? maxSlide, bool allowAttack)
     {
+        var grid = fen.Grid;
         for (var i = 1; i <= (maxSlide ?? Constants.GridSize); i++)
         {
             var targetRow = point.Row + deltaRow * i;
@@ -80,74 +81,74 @@ public class MoveService : IMoveService
         }
     }
 
-    private void AddPawnMoves(GridItem[,] grid, GridItem item, Point point, List<Move> moves)
+    private void AddPawnMoves(FenObject fen, GridItem item, Point point, List<Move> moves)
     {
         switch (item.Player)
         {
             case Player.Black:
-                AddCalculatedMove(grid, item, point, moves, 1, 0, 1, false);
+                AddCalculatedMove(fen, item, point, moves, 1, 0, 1, false);
                 break;
 
             case Player.White:
-                AddCalculatedMove(grid, item, point, moves, -1, 0, 1, false);
+                AddCalculatedMove(fen, item, point, moves, -1, 0, 1, false);
                 break;
         }
     }
 
-    private void AddKingMoves(GridItem[,] grid, GridItem item, Point point, List<Move> moves)
+    private void AddKingMoves(FenObject fen, GridItem item, Point point, List<Move> moves)
     {
-        AddCalculatedMove(grid, item, point, moves, 1, 1, 1, true);
-        AddCalculatedMove(grid, item, point, moves, 1, 0, 1, true);
-        AddCalculatedMove(grid, item, point, moves, 1, -1, 1, true);
+        AddCalculatedMove(fen, item, point, moves, 1, 1, 1, true);
+        AddCalculatedMove(fen, item, point, moves, 1, 0, 1, true);
+        AddCalculatedMove(fen, item, point, moves, 1, -1, 1, true);
 
-        AddCalculatedMove(grid, item, point, moves, -1, 1, 1, true);
-        AddCalculatedMove(grid, item, point, moves, -1, 0, 1, true);
-        AddCalculatedMove(grid, item, point, moves, -1, -1, 1, true);
+        AddCalculatedMove(fen, item, point, moves, -1, 1, 1, true);
+        AddCalculatedMove(fen, item, point, moves, -1, 0, 1, true);
+        AddCalculatedMove(fen, item, point, moves, -1, -1, 1, true);
 
-        AddCalculatedMove(grid, item, point, moves, 0, 1, 1, true);
-        AddCalculatedMove(grid, item, point, moves, 0, -1, 1, true);
+        AddCalculatedMove(fen, item, point, moves, 0, 1, 1, true);
+        AddCalculatedMove(fen, item, point, moves, 0, -1, 1, true);
     }
 
-    private void AddQueenMoves(GridItem[,] grid, GridItem item, Point point,List<Move> moves)
+    private void AddQueenMoves(FenObject fen, GridItem item, Point point,List<Move> moves)
     {
-        AddCalculatedMove(grid, item, point, moves, 1, 1, null, true);
-        AddCalculatedMove(grid, item, point, moves, 1, 0, null, true);
-        AddCalculatedMove(grid, item, point, moves, 1, -1, null, true);
+        AddCalculatedMove(fen, item, point, moves, 1, 1, null, true);
+        AddCalculatedMove(fen, item, point, moves, 1, 0, null, true);
+        AddCalculatedMove(fen, item, point, moves, 1, -1, null, true);
 
-        AddCalculatedMove(grid, item, point, moves, -1, 1, null, true);
-        AddCalculatedMove(grid, item, point, moves, -1, 0, null, true);
-        AddCalculatedMove(grid, item, point, moves, -1, -1, null, true);
+        AddCalculatedMove(fen, item, point, moves, -1, 1, null, true);
+        AddCalculatedMove(fen, item, point, moves, -1, 0, null, true);
+        AddCalculatedMove(fen, item, point, moves, -1, -1, null, true);
 
-        AddCalculatedMove(grid, item, point, moves, 0, 1, null, true);
-        AddCalculatedMove(grid, item, point, moves, 0, -1, null, true);
+        AddCalculatedMove(fen, item, point, moves, 0, 1, null, true);
+        AddCalculatedMove(fen, item, point, moves, 0, -1, null, true);
     }
 
-    private void AddBishopMoves(GridItem[,] grid, GridItem item, Point point, List<Move> moves)
+    private void AddBishopMoves(FenObject fen, GridItem item, Point point, List<Move> moves)
     {
-        AddCalculatedMove(grid, item, point, moves, 1, 1, null, true);
-        AddCalculatedMove(grid, item, point, moves, 1, -1, null, true);
-        AddCalculatedMove(grid, item, point, moves, -1, 1, null, true);
-        AddCalculatedMove(grid, item, point, moves, -1, -1, null, true);
+        AddCalculatedMove(fen, item, point, moves, 1, 1, null, true);
+        AddCalculatedMove(fen, item, point, moves, 1, -1, null, true);
+        AddCalculatedMove(fen, item, point, moves, -1, 1, null, true);
+        AddCalculatedMove(fen, item, point, moves, -1, -1, null, true);
     }
 
-    private void AddKnightMoves(GridItem[,] grid, GridItem item, Point point, List<Move> moves)
+    private void AddKnightMoves(FenObject fen, GridItem item, Point point, List<Move> moves)
     {
-        AddCalculatedMove(grid, item, point, moves, 1, 2, 1, true);
-        AddCalculatedMove(grid, item, point, moves, 1, -2, 1, true);
-        AddCalculatedMove(grid, item, point, moves, -1, 2, 1, true);
-        AddCalculatedMove(grid, item, point, moves, -1, -2, 1, true);
+        AddCalculatedMove(fen, item, point, moves, 1, 2, 1, true);
+        AddCalculatedMove(fen, item, point, moves, 1, -2, 1, true);
+        AddCalculatedMove(fen, item, point, moves, -1, 2, 1, true);
+        AddCalculatedMove(fen, item, point, moves, -1, -2, 1, true);
 
-        AddCalculatedMove(grid, item, point, moves, 2, 1, 1, true);
-        AddCalculatedMove(grid, item, point, moves, 2, -1, 1, true);
-        AddCalculatedMove(grid, item, point, moves, -2, 1, 1, true);
-        AddCalculatedMove(grid, item, point, moves, -2, -1, 1, true);
+        AddCalculatedMove(fen, item, point, moves, 2, 1, 1, true);
+        AddCalculatedMove(fen, item, point, moves, 2, -1, 1, true);
+        AddCalculatedMove(fen, item, point, moves, -2, 1, 1, true);
+        AddCalculatedMove(fen, item, point, moves, -2, -1, 1, true);
     }
 
-    private void AddRookMoves(GridItem[,] grid, GridItem item, Point point, List<Move> moves)
+    private void AddRookMoves(FenObject fen, GridItem item, Point point, List<Move> moves)
     {
-        AddCalculatedMove(grid, item, point, moves, 1, 0, null, true);
-        AddCalculatedMove(grid, item, point, moves, -1, 0, null, true);
-        AddCalculatedMove(grid, item, point, moves, 0, 1, null, true);
-        AddCalculatedMove(grid, item, point, moves, 0, -1, null, true);
+        AddCalculatedMove(fen, item, point, moves, 1, 0, null, true);
+        AddCalculatedMove(fen, item, point, moves, -1, 0, null, true);
+        AddCalculatedMove(fen, item, point, moves, 0, 1, null, true);
+        AddCalculatedMove(fen, item, point, moves, 0, -1, null, true);
     }
 }

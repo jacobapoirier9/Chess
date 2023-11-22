@@ -15,7 +15,7 @@ public class ConsoleDisplayService : IDisplayService
         _moveService = moveService;
     }
 
-    private void SendCore(GridItem[,] grid, Point? point, List<Move> moves)
+    private void SendCore(FenObject fen, Point? point, List<Move> moves)
     {
         if (!_preserveConsole)
             Console.Clear();
@@ -32,7 +32,7 @@ public class ConsoleDisplayService : IDisplayService
 
             for (var column = 0; column < Constants.GridSize; column++)
             {
-                var target = grid.GetItemAtPositionOrDefault(new Point(row, column));
+                var target = fen.Grid.GetItemAtPositionOrDefault(new Point(row, column));
 
                 Console.BackgroundColor = ConsoleColor.Black;
 
@@ -70,9 +70,9 @@ public class ConsoleDisplayService : IDisplayService
         }
     }
 
-    public void Send(GridItem[,] grid) =>
-        SendCore(grid, null, null);
+    public void Send(FenObject fen) =>
+        SendCore(fen, null, null);
 
-    public void Send(GridItem[,] grid, Point point) =>
-        SendCore(grid, point, _moveService.GenerateMoves(grid, point));
+    public void Send(FenObject fen, Point point) =>
+        SendCore(fen, point, _moveService.GenerateMoves(fen, point));
 }

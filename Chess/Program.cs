@@ -65,35 +65,33 @@ public class GameService
 
         var fenString = (_fenStringService as FenStringService).GeneratePiecePlacementSegment(fen.Grid);
 
-        var grid = fen.Grid;
+        _displayService.Send(fen, new Point(1, 1));
 
-        _displayService.Send(grid, new Point(1, 1));
+        Grid.ForceSwap(fen.Grid, new Point(6, 1), new Point(2, 2));
+        Grid.ForceSwap(fen.Grid, new Point(6, 3), new Point(2, 4));
 
-        Grid.ForceSwap(grid, new Point(6, 1), new Point(2, 2));
-        Grid.ForceSwap(grid, new Point(6, 3), new Point(2, 4));
+        _displayService.Send(fen, new Point(1, 3));
 
-        _displayService.Send(grid, new Point(1, 3));
+        _displayService.Send(fen, new Point(1, 2));
 
-        _displayService.Send(grid, new Point(1, 2));
+        _displayService.Send(fen, new Point(7, 1));
 
-        _displayService.Send(grid, new Point(7, 1));
+        Grid.ForceSwap(fen.Grid, new Point(7, 5), new Point(4, 4));
+        _displayService.Send(fen, new Point(4, 4));
+        Grid.ForceSwap(fen.Grid, new Point(4, 4), new Point(7, 5));
 
-        Grid.ForceSwap(grid, new Point(7, 5), new Point(4, 4));
-        _displayService.Send(grid, new Point(4, 4));
-        Grid.ForceSwap(grid, new Point(4, 4), new Point(7, 5));
+        _displayService.Send(fen, new Point(7, 2));
 
-        _displayService.Send(grid, new Point(7, 2));
+        Grid.ForceSwap(fen.Grid, new Point(7, 7), new Point(4, 0));
+        _displayService.Send(fen, new Point(4, 0));
 
-        Grid.ForceSwap(grid, new Point(7, 7), new Point(4, 0));
-        _displayService.Send(grid, new Point(4, 0));
+        Grid.ForceSwap(fen.Grid, new Point(1, 7), new Point(2, 7));
+        _displayService.Send(fen, new Point(7, 2));
 
-        Grid.ForceSwap(grid, new Point(1, 7), new Point(2, 7));
-        _displayService.Send(grid, new Point(7, 2));
+        var test = (_fenStringService as FenStringService).GeneratePiecePlacementSegment(fen.Grid);
+        fen.Grid = _fenStringService.ParsePiecePlacement(test);
 
-        var test = (_fenStringService as FenStringService).GeneratePiecePlacementSegment(grid);
-        grid = _fenStringService.ParsePiecePlacement(test);
-
-        _displayService.Send(grid, new Point(7, 2));
+        _displayService.Send(fen, new Point(7, 2));
 
         GameLoop();
         return;
@@ -107,17 +105,17 @@ public class GameService
 
         while (true)
         {
-            _displayService.Send(fen.Grid);
+            _displayService.Send(fen);
 
             Console.WriteLine("Player 1 is up");
             var playerOneSelected = _playerOne.GetPieceSelectionPoint(fen);
-            _displayService.Send(fen.Grid, new Point(playerOneSelected.Row, playerOneSelected.Column));
+            _displayService.Send(fen, new Point(playerOneSelected.Row, playerOneSelected.Column));
 
             var playerOneMoveTo = fen.Grid.GetItemAtPosition(_playerTwo.GetPieceMovementSelectionPoint(fen));
 
             Console.WriteLine("Player 2 is up");
             var playerTwoSelected = _playerOne.GetPieceSelectionPoint(fen);
-            _displayService.Send(fen.Grid, new Point(playerTwoSelected.Row, playerTwoSelected.Column));
+            _displayService.Send(fen, new Point(playerTwoSelected.Row, playerTwoSelected.Column));
 
             var playerTwoMoveTo = fen.Grid.GetItemAtPosition(_playerTwo.GetPieceMovementSelectionPoint(fen));
 

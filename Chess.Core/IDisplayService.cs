@@ -2,7 +2,7 @@
 
 public interface IDisplayService
 {
-    public void Send(GridItem[,] grid);
+    public void Send(FenObject fen);
 
-    public void Send(GridItem[,] grid, Point point);
+    public void Send(FenObject fen, Point point);
 }
