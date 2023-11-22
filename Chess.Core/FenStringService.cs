@@ -53,9 +53,6 @@ public class FenStringService : IFenStringService
 
                 grid[row, column] = new GridItem
                 {
-                    Row = row,
-                    Column = column,
-
                     CharacterCode = char.ToUpper(next),
                     Player = char.IsLower(next) ? Player.Black : Player.White
                 };

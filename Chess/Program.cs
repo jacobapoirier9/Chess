@@ -110,13 +110,13 @@ public class GameService
             _displayService.Send(fen.Grid);
 
             Console.WriteLine("Player 1 is up");
-            var playerOneSelected = fen.Grid.GetItemAtPosition(_playerOne.GetPieceSelectionPoint(fen));
+            var playerOneSelected = _playerOne.GetPieceSelectionPoint(fen);
             _displayService.Send(fen.Grid, new Point(playerOneSelected.Row, playerOneSelected.Column));
 
             var playerOneMoveTo = fen.Grid.GetItemAtPosition(_playerTwo.GetPieceMovementSelectionPoint(fen));
 
             Console.WriteLine("Player 2 is up");
-            var playerTwoSelected = fen.Grid.GetItemAtPosition(_playerOne.GetPieceSelectionPoint(fen));
+            var playerTwoSelected = _playerOne.GetPieceSelectionPoint(fen);
             _displayService.Send(fen.Grid, new Point(playerTwoSelected.Row, playerTwoSelected.Column));
 
             var playerTwoMoveTo = fen.Grid.GetItemAtPosition(_playerTwo.GetPieceMovementSelectionPoint(fen));

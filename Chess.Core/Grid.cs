@@ -11,18 +11,6 @@ public static class Grid
 
         grid[fromPoint.Row, fromPoint.Column] = to;
         grid[toPoint.Row, toPoint.Column] = from;
-
-        if (from is not null)
-        {
-            from.Row = toPoint.Row;
-            from.Column = toPoint.Column;
-        }
-
-        if (to is not null)
-        {
-            to.Row = fromPoint.Row;
-            to.Column = fromPoint.Column;
-        }
     }
 
 
