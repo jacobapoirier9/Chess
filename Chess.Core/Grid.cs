@@ -28,7 +28,7 @@ public static class Grid
 
     public static T GetItemAtPositionOrDefault<T>(this T[,] array, Point point)
     {
-        if (array.CheckValidPosition(point))
+        if (array.CheckValidBounds(point))
             return array[point.Row, point.Column];
 
         return default;
@@ -44,7 +44,7 @@ public static class Grid
         return item;
     }
 
-    public static bool CheckValidPosition<T>(this T[,] array, Point point) =>
+    public static bool CheckValidBounds<T>(this T[,] array, Point point) =>
         0 <= point.Row && point.Row < array.GetLength(0) && 0 <= point.Column && point.Column < array.GetLength(1);
 
     public static Player GetOtherPlayer(this Player player)

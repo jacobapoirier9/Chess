@@ -47,7 +47,7 @@ public class MoveService : IMoveService
 
             var targetPoint = new Point(targetRow, targetColumn);
 
-            if (grid.CheckValidPosition(targetPoint))
+            if (grid.CheckValidBounds(targetPoint))
             {
                 var target = grid.GetItemAtPositionOrDefault(targetPoint);
 
