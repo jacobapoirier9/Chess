@@ -2,7 +2,7 @@
 
 public interface IDisplayService
 {
-    public void Send(FenObject fen);
+    public void Draw(FenObject fen);
 
-    public void Send(FenObject fen, Point point);
+    public void Draw(FenObject fen, Point point, List<Move> moves);
 }

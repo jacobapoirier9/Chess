@@ -65,6 +65,12 @@ public class GameService
         _playerTwo = _serviceProvider.GetRequiredService<IPlayerTwo>();
     }
 
+    private void DisplayServiceQuickDraw(FenObject fen, Point point)
+    {
+        var moves = _moveService.GenerateMoves(fen, point);
+        _displayService.Draw(fen, point, moves);
+    }
+
     [Surface("start-test")]
     public void StartTest()
     {
@@ -74,33 +80,33 @@ public class GameService
 
         var fenString = (_fenStringService as FenStringService).GeneratePiecePlacementSegment(fen.Grid);
 
-        _displayService.Send(fen, new Point(1, 1));
+        DisplayServiceQuickDraw(fen, new Point(1, 1));
 
         Grid.ForceSwap(fen.Grid, new Point(6, 1), new Point(2, 2));
         Grid.ForceSwap(fen.Grid, new Point(6, 3), new Point(2, 4));
 
-        _displayService.Send(fen, new Point(1, 3));
+        DisplayServiceQuickDraw(fen, new Point(1, 3));
 
-        _displayService.Send(fen, new Point(1, 2));
+        DisplayServiceQuickDraw(fen, new Point(1, 2));
 
-        _displayService.Send(fen, new Point(7, 1));
+        DisplayServiceQuickDraw(fen, new Point(7, 1));
 
         Grid.ForceSwap(fen.Grid, new Point(7, 5), new Point(4, 4));
-        _displayService.Send(fen, new Point(4, 4));
+        DisplayServiceQuickDraw(fen, new Point(4, 4));
         Grid.ForceSwap(fen.Grid, new Point(4, 4), new Point(7, 5));
 
-        _displayService.Send(fen, new Point(7, 2));
+        DisplayServiceQuickDraw(fen, new Point(7, 2));
 
         Grid.ForceSwap(fen.Grid, new Point(7, 7), new Point(4, 0));
-        _displayService.Send(fen, new Point(4, 0));
+        DisplayServiceQuickDraw(fen, new Point(4, 0));
 
         Grid.ForceSwap(fen.Grid, new Point(1, 7), new Point(2, 7));
-        _displayService.Send(fen, new Point(7, 2));
+        DisplayServiceQuickDraw(fen, new Point(7, 2));
 
         var test = (_fenStringService as FenStringService).GeneratePiecePlacementSegment(fen.Grid);
         fen.Grid = _fenStringService.ParsePiecePlacement(test);
 
-        _displayService.Send(fen, new Point(7, 2));
+        DisplayServiceQuickDraw(fen, new Point(7, 2));
 
         GameLoop();
         return;
@@ -114,25 +120,27 @@ public class GameService
 
         while (true)
         {
-            _displayService.Send(fen);
+            _displayService.Draw(fen);
 
             Console.WriteLine("Player 1 is up");
             var playerOneSelected = _playerOne.GetPieceSelectionPoint(fen);
-            _displayService.Send(fen, playerOneSelected);
+            var playerOneMoves = _moveService.GenerateMoves(fen, playerOneSelected);
+            _displayService.Draw(fen, playerOneSelected, playerOneMoves);
 
             var playerOneMoveTo = _playerOne.GetPieceMovementSelectionPoint(fen);
             fen.Grid.ForceSwap(playerOneSelected, playerOneMoveTo);
-            _displayService.Send(fen);
+            _displayService.Draw(fen);
 
             fen.ActivePlayer = fen.ActivePlayer.GetOtherPlayer();
 
             Console.WriteLine("Player 2 is up");
             var playerTwoSelected = _playerTwo.GetPieceSelectionPoint(fen);
-            _displayService.Send(fen, playerTwoSelected);
+            var playerTwoMoves = _moveService.GenerateMoves(fen, playerTwoSelected);
+            _displayService.Draw(fen, playerTwoSelected, playerTwoMoves);
 
             var playerTwoMoveTo = _playerTwo.GetPieceMovementSelectionPoint(fen);
             fen.Grid.ForceSwap(playerTwoSelected, playerTwoMoveTo);
-            _displayService.Send(fen);
+            _displayService.Draw(fen);
 
             break;
         }

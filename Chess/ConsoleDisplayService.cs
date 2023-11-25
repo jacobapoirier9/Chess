@@ -8,13 +8,6 @@ public class ConsoleDisplayService : IDisplayService
 
     private const ConsoleColor _defaultConsoleColor = ConsoleColor.Black;
 
-
-    private readonly IMoveService _moveService;
-    public ConsoleDisplayService(IMoveService moveService)
-    {
-        _moveService = moveService;
-    }
-
     private void SendCore(FenObject fen, Point? point, List<Move> moves)
     {
         if (!_preserveConsole)
@@ -70,9 +63,9 @@ public class ConsoleDisplayService : IDisplayService
         }
     }
 
-    public void Send(FenObject fen) =>
+    public void Draw(FenObject fen) =>
         SendCore(fen, null, null);
 
-    public void Send(FenObject fen, Point point) =>
-        SendCore(fen, point, _moveService.GenerateMoves(fen, point));
+    public void Draw(FenObject fen, Point point, List<Move> moves) =>
+        SendCore(fen, point, moves);
 }
