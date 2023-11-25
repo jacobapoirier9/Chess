@@ -15,4 +15,7 @@ public static class Constants
     public const char FenStringEmptyFieldCharacter = '-';
 
     public const int GridSize = 8;
+
+    public const int BlackPawnRow = 1;
+    public const int WhitePawnRow = 6;
 }

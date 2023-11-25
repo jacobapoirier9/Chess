@@ -23,11 +23,13 @@ public static class Program
                 //services.AddSingleton<IPlayerTwo, ConsoleInputPlayer>();
 
                 services.AddSingleton<IPlayerOne>(new MemoryInputPlayer(
-                    "17", "27"
+                    "17", "27",
+                    "27", "37"
                 ));
 
                 services.AddSingleton<IPlayerTwo>(new MemoryInputPlayer(
-                    "64", "54"
+                    "64", "54",
+                    "71", "52"
                 ));
 
                 //services.AddSingleton<IPlayerService, PlayerService>();
@@ -120,29 +122,36 @@ public class GameService
 
         while (true)
         {
-            _displayService.Draw(fen);
+            try
+            {
+                _displayService.Draw(fen);
 
-            Console.WriteLine("Player 1 is up");
-            var playerOneSelected = _playerOne.GetPieceSelectionPoint(fen);
-            var playerOneMoves = _moveService.GenerateMoves(fen, playerOneSelected);
-            _displayService.Draw(fen, playerOneSelected, playerOneMoves);
+                Console.WriteLine("Player 1 is up");
+                var playerOneSelected = _playerOne.GetPieceSelectionPoint(fen);
+                var playerOneMoves = _moveService.GenerateMoves(fen, playerOneSelected);
+                _displayService.Draw(fen, playerOneSelected, playerOneMoves);
 
-            var playerOneMoveTo = _playerOne.GetPieceMovementSelectionPoint(fen);
-            fen.Grid.ForceSwap(playerOneSelected, playerOneMoveTo);
-            _displayService.Draw(fen);
+                var playerOneMoveTo = _playerOne.GetPieceMovementSelectionPoint(fen);
+                fen.Grid.ForceSwap(playerOneSelected, playerOneMoveTo);
+                _displayService.Draw(fen);
 
-            fen.ActivePlayer = fen.ActivePlayer.GetOtherPlayer();
+                fen.ActivePlayer = fen.ActivePlayer.GetOtherPlayer();
 
-            Console.WriteLine("Player 2 is up");
-            var playerTwoSelected = _playerTwo.GetPieceSelectionPoint(fen);
-            var playerTwoMoves = _moveService.GenerateMoves(fen, playerTwoSelected);
-            _displayService.Draw(fen, playerTwoSelected, playerTwoMoves);
+                Console.WriteLine("Player 2 is up");
+                var playerTwoSelected = _playerTwo.GetPieceSelectionPoint(fen);
+                var playerTwoMoves = _moveService.GenerateMoves(fen, playerTwoSelected);
+                _displayService.Draw(fen, playerTwoSelected, playerTwoMoves);
 
-            var playerTwoMoveTo = _playerTwo.GetPieceMovementSelectionPoint(fen);
-            fen.Grid.ForceSwap(playerTwoSelected, playerTwoMoveTo);
-            _displayService.Draw(fen);
-
-            break;
+                var playerTwoMoveTo = _playerTwo.GetPieceMovementSelectionPoint(fen);
+                fen.Grid.ForceSwap(playerTwoSelected, playerTwoMoveTo);
+                _displayService.Draw(fen);
+            }
+            catch (Exception ex) // TODO: This is only here to provide an automatic break mechanism when the memory inputs run out of inputs
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("Breaking game loop");
+                break;
+            }
         }
     }
 }

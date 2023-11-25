@@ -41,8 +41,9 @@ public class ConsoleDisplayService : IDisplayService
 
                 if (target?.CharacterCode is not null)
                 {
+                    Console.Write(target.Player.ToString().First());
                     Console.Write(target.CharacterCode);
-                    Console.Write((int)target.Player);
+                    //Console.Write((int)target.Player);
                     Console.Write(Constants.DefaultDisplayCharacter);
                 }
                 else

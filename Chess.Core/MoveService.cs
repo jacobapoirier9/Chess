@@ -82,15 +82,17 @@ public class MoveService : IMoveService
     }
 
     private void AddPawnMoves(FenObject fen, GridItem item, Point point, List<Move> moves)
-    {
+    { 
         switch (item.Player)
         {
             case Player.Black:
-                AddCalculatedMove(fen, item, point, moves, 1, 0, 1, false);
+                var blackSlide = point.Row == Constants.BlackPawnRow ? 2 : 1;
+                AddCalculatedMove(fen, item, point, moves, 1, 0, blackSlide, false);
                 break;
 
             case Player.White:
-                AddCalculatedMove(fen, item, point, moves, -1, 0, 1, false);
+                var whiteSlide = point.Row == Constants.WhitePawnRow ? 2 : 1;
+                AddCalculatedMove(fen, item, point, moves, -1, 0, whiteSlide, false);
                 break;
         }
     }
