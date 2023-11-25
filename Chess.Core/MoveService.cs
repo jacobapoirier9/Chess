@@ -82,7 +82,7 @@ public class MoveService : IMoveService
     }
 
     private void AddPawnMoves(FenObject fen, GridItem item, Point point, List<Move> moves)
-    { 
+    {
         switch (item.Player)
         {
             case Player.Black:
@@ -111,7 +111,7 @@ public class MoveService : IMoveService
         AddCalculatedMove(fen, item, point, moves, 0, -1, 1, true);
     }
 
-    private void AddQueenMoves(FenObject fen, GridItem item, Point point,List<Move> moves)
+    private void AddQueenMoves(FenObject fen, GridItem item, Point point, List<Move> moves)
     {
         AddCalculatedMove(fen, item, point, moves, 1, 1, null, true);
         AddCalculatedMove(fen, item, point, moves, 1, 0, null, true);
@@ -152,5 +152,16 @@ public class MoveService : IMoveService
         AddCalculatedMove(fen, item, point, moves, -1, 0, null, true);
         AddCalculatedMove(fen, item, point, moves, 0, 1, null, true);
         AddCalculatedMove(fen, item, point, moves, 0, -1, null, true);
+    }
+
+    public void ExecuteMove(FenObject fen, Point from, Point to, List<Move> moves)
+    {
+        // Just to make sure the executing move is present in the moves collection
+        if (!moves.Exists(move => from == move.From && to == move.To))
+        {
+            throw new ApplicationException("Invalid move");
+        }
+
+        fen.Grid.ForceSwap(from, to);
     }
 }

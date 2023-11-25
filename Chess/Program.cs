@@ -132,7 +132,7 @@ public class GameService
                 _displayService.Draw(fen, playerOneSelected, playerOneMoves);
 
                 var playerOneMoveTo = _playerOne.GetPieceMovementSelectionPoint(fen);
-                fen.Grid.ForceSwap(playerOneSelected, playerOneMoveTo);
+                _moveService.ExecuteMove(fen, playerOneSelected, playerOneMoveTo, playerOneMoves);
                 _displayService.Draw(fen);
 
                 fen.ActivePlayer = fen.ActivePlayer.GetOtherPlayer();
@@ -143,7 +143,7 @@ public class GameService
                 _displayService.Draw(fen, playerTwoSelected, playerTwoMoves);
 
                 var playerTwoMoveTo = _playerTwo.GetPieceMovementSelectionPoint(fen);
-                fen.Grid.ForceSwap(playerTwoSelected, playerTwoMoveTo);
+                _moveService.ExecuteMove(fen, playerTwoSelected, playerTwoMoveTo, playerTwoMoves);
                 _displayService.Draw(fen);
             }
             catch (Exception ex) // TODO: This is only here to provide an automatic break mechanism when the memory inputs run out of inputs
