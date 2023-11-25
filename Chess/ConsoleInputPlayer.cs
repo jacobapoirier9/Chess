@@ -26,7 +26,7 @@ public class ConsoleInputPlayer : IPlayer, IPlayerOne, IPlayerTwo
             var row = int.Parse(input.ElementAt(0).ToString());
             var column = int.Parse(input.ElementAt(1).ToString());
 
-            if (row.IsBetween(0, Constants.GridSize - 1) && column.IsBetween(0, Constants.GridSize - 1))
+            if (row.IsBetweenInclusive(0, Constants.GridSize - 1) && column.IsBetweenInclusive(0, Constants.GridSize - 1))
             {
                 return new Point(row, column);
             }

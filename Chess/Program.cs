@@ -19,8 +19,17 @@ public static class Program
             {
                 services.AddSingleton<IFenStringService, FenStringService>();
 
-                services.AddSingleton<IPlayerOne, ConsoleInputPlayer>();
-                services.AddSingleton<IPlayerTwo, ConsoleInputPlayer>();
+                //services.AddSingleton<IPlayerOne, ConsoleInputPlayer>();
+                //services.AddSingleton<IPlayerTwo, ConsoleInputPlayer>();
+
+                services.AddSingleton<IPlayerOne>(new MemoryInputPlayer(
+                    "17", "27"
+                ));
+
+                services.AddSingleton<IPlayerTwo>(new MemoryInputPlayer(
+                    "64", "54"
+                ));
+
                 //services.AddSingleton<IPlayerService, PlayerService>();
 
                 services.AddSingleton<IMoveService, MoveService>();
@@ -109,15 +118,21 @@ public class GameService
 
             Console.WriteLine("Player 1 is up");
             var playerOneSelected = _playerOne.GetPieceSelectionPoint(fen);
-            _displayService.Send(fen, new Point(playerOneSelected.Row, playerOneSelected.Column));
+            _displayService.Send(fen, playerOneSelected);
 
-            var playerOneMoveTo = fen.Grid.GetItemAtPosition(_playerTwo.GetPieceMovementSelectionPoint(fen));
+            var playerOneMoveTo = _playerOne.GetPieceMovementSelectionPoint(fen);
+            fen.Grid.ForceSwap(playerOneSelected, playerOneMoveTo);
+            _displayService.Send(fen);
+
+            fen.ActivePlayer = fen.ActivePlayer.GetOtherPlayer();
 
             Console.WriteLine("Player 2 is up");
-            var playerTwoSelected = _playerOne.GetPieceSelectionPoint(fen);
-            _displayService.Send(fen, new Point(playerTwoSelected.Row, playerTwoSelected.Column));
+            var playerTwoSelected = _playerTwo.GetPieceSelectionPoint(fen);
+            _displayService.Send(fen, playerTwoSelected);
 
-            var playerTwoMoveTo = fen.Grid.GetItemAtPosition(_playerTwo.GetPieceMovementSelectionPoint(fen));
+            var playerTwoMoveTo = _playerTwo.GetPieceMovementSelectionPoint(fen);
+            fen.Grid.ForceSwap(playerTwoSelected, playerTwoMoveTo);
+            _displayService.Send(fen);
 
             break;
         }

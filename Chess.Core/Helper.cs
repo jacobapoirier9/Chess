@@ -22,5 +22,5 @@ public static class Helper
         }
     }
 
-    public static bool IsBetween(this int number, int low, int high) => low <= number && number <= high;
+    public static bool IsBetweenInclusive(this int number, int low, int high) => low <= number && number <= high;
 }
