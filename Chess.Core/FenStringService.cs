@@ -152,6 +152,22 @@ public class FenStringService : IFenStringService
         return new Point(rowNumber, columnNumber);
     }
 
+    public string Generate(FenObject fen)
+    {
+        var fenString = string.Join(Constants.FenStringSegmentSeparator, new string[]
+        {
+            GeneratePiecePlacementSegment(fen.Grid)
+
+
+            //CastlingRights = ParseCastlingRights(GetSegmentAndValidateExists(segments, 2, nameof(FenObject.CastlingRights))),
+            //PossibleEnPassantTarget = ParseEnPassantTarget(GetSegmentAndValidateExists(segments, 3, nameof(FenObject.PossibleEnPassantTarget))),
+            //HalfMoveClock = ParseHalfMoveClock(GetSegmentAndValidateExists(segments, 4, nameof(FenObject.HalfMoveClock))),
+            //FullMoveNumber = ParseFullMoveNumber(GetSegmentAndValidateExists(segments, 5, nameof(FenObject.FullMoveNumber))),
+        });
+
+        return fenString;
+    }
+
     public string GeneratePiecePlacementSegment(GridItem[,] grid)
     {
         var lines = new List<string>();
@@ -206,13 +222,16 @@ public class FenStringService : IFenStringService
         return string.Join(Constants.FenStringPiecePlacementLineSeparator, lines);
     }
 
-    public string Generate(FenObject fen)
+    public string GenerateActiveColorSegment(Player player)
     {
-        var fenString = string.Join(Constants.FenStringSegmentSeparator, new string[]
+        var activeColorSegment = player switch
         {
-            GeneratePiecePlacementSegment(fen.Grid)
-        });
+            Player.Black => "b",
+            Player.White => "w",
 
-        return fenString;
+            _ => throw new IndexOutOfRangeException()
+        };
+
+        return activeColorSegment;
     }
 }

@@ -20,4 +20,6 @@ public interface IFenStringService
     public string Generate(FenObject fen);
 
     public string GeneratePiecePlacementSegment(GridItem[,] grid);
+
+    public string GenerateActiveColorSegment(Player player);
 }
