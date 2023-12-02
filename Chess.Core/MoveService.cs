@@ -109,6 +109,8 @@ public class MoveService : IMoveService
 
         AddCalculatedMove(fen, item, point, moves, 0, 1, 1, true);
         AddCalculatedMove(fen, item, point, moves, 0, -1, 1, true);
+
+        AddCasltingMoves(fen, item, point, moves);
     }
 
     private void AddQueenMoves(FenObject fen, GridItem item, Point point, List<Move> moves)
@@ -123,6 +125,8 @@ public class MoveService : IMoveService
 
         AddCalculatedMove(fen, item, point, moves, 0, 1, null, true);
         AddCalculatedMove(fen, item, point, moves, 0, -1, null, true);
+
+        AddCasltingMoves(fen, item, point, moves);
     }
 
     private void AddBishopMoves(FenObject fen, GridItem item, Point point, List<Move> moves)
@@ -152,6 +156,101 @@ public class MoveService : IMoveService
         AddCalculatedMove(fen, item, point, moves, -1, 0, null, true);
         AddCalculatedMove(fen, item, point, moves, 0, 1, null, true);
         AddCalculatedMove(fen, item, point, moves, 0, -1, null, true);
+        AddCasltingMoves(fen, item, point, moves);
+    }
+
+    private void AddCasltingMoves(FenObject fen, GridItem item, Point point, List<Move> moves)
+    {
+        var move = new Move
+        {
+            From = point,
+            IsCastling = true
+        };
+
+        if (fen.ActivePlayer == Player.White 
+            && fen.CastlingRights.WhiteQueenSide
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(7, 1)) is null
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(7, 2)) is null)
+        {
+            if (item.CharacterCode == Constants.QueenDisplayCharacter)
+            {
+                move.To = new Point(7, 0);
+            }
+            else if (item.CharacterCode == Constants.RookDisplayCharacter)
+            {
+                move.To = new Point(7, 3);
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        else if (fen.ActivePlayer == Player.White
+            && fen.CastlingRights.WhiteKingSide
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(7, 5)) is null
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(7, 6)) is null)
+        {
+            if (item.CharacterCode == Constants.KingDisplayCharacter)
+            {
+                move.To = new Point(7, 7);
+            }
+            else if (item.CharacterCode == Constants.RookDisplayCharacter)
+            {
+                move.To = new Point(7, 4);
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        else if (fen.ActivePlayer == Player.Black
+            && fen.CastlingRights.BlackQueenSide
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(0, 1)) is null
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(0, 2)) is null
+            && item.CharacterCode == Constants.QueenDisplayCharacter)
+        {
+            if (item.CharacterCode == Constants.QueenDisplayCharacter)
+            {
+                move.To = new Point(0, 0);
+            }
+            else if (item.CharacterCode == Constants.RookDisplayCharacter)
+            {
+                move.To = new Point(0, 3);
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        else if (fen.ActivePlayer == Player.Black
+            && fen.CastlingRights.BlackKingSide
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(0, 5)) is null
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(0, 6)) is null
+            && item.CharacterCode == Constants.KingDisplayCharacter)
+        {
+            if (item.CharacterCode == Constants.KingDisplayCharacter)
+            {
+                move.To = new Point(0, 7);
+            }
+            else if (item.CharacterCode == Constants.RookDisplayCharacter)
+            {
+                move.To = new Point(0, 4);
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        else
+        {
+            return;
+        }
+
+        moves.Add(move);
     }
 
     public void ExecuteMove(FenObject fen, Point from, Point to, List<Move> moves)
@@ -163,6 +262,8 @@ public class MoveService : IMoveService
         }
 
         fen.Grid.ForceSwap(from, to);
+
+        fen.ActivePlayer = fen.ActivePlayer.GetOtherPlayer();
 
         var move = moves.Single(move => from == move.From && to == move.To); // TODO: Should this be moved to the caller?
         ApplyPossibleEnPassantTarget(fen, move);

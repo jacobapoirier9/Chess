@@ -9,4 +9,6 @@ public class Move
     public Point To { get; set; }
 
     public bool IsAttack { get; set; }
+
+    public bool IsCastling { get; set; }
 }

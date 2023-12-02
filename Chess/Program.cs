@@ -24,12 +24,18 @@ public static class Program
 
                 services.AddSingleton<IPlayerOne>(new MemoryInputPlayer(
                     "17", "27",
-                    "27", "37"
+                    "27", "37",
+                    "16", "26",
+                    "26", "36",
+                    "36", "46"
                 ));
 
                 services.AddSingleton<IPlayerTwo>(new MemoryInputPlayer(
                     "64", "54",
-                    "71", "52"
+                    "71", "52",
+                    "61", "41",
+                    "72", "50",
+                    "73", "70"
                 ));
 
                 //services.AddSingleton<IPlayerService, PlayerService>();
