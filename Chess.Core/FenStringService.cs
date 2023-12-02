@@ -174,14 +174,9 @@ public class FenStringService : IFenStringService
             GenerateGridSegment(fen.Grid),
             GenerateActivePlayerSegment(fen.ActivePlayer),
             GenerateCastlingRightsSegment(fen),
-            GeneratePossibleEnPassantSegment(fen)
-
-            //Grid = ParseGridSegment(GetFenSegment(segments, 0, nameof(FenObject.Grid))),
-            //ActivePlayer = ParseActivePlayerSegment(GetFenSegment(segments, 1, nameof(FenObject.ActivePlayer))),
-            //CastlingRights = ParseCasltingRightsSegment(GetFenSegment(segments, 2, nameof(FenObject.CastlingRights))),
-            //PossibleEnPassantTarget = ParsePossibleEnPassantSegment(GetFenSegment(segments, 3, nameof(FenObject.PossibleEnPassantTarget))),
-            //HalfMoveClock = ParseHalfClockSegment(GetFenSegment(segments, 4, nameof(FenObject.HalfMoveClock))),
-            //FullMoveNumber = ParseFullMoveNumberSegment(GetFenSegment(segments, 5, nameof(FenObject.FullMoveNumber))),
+            GeneratePossibleEnPassantSegment(fen),
+            GenerateHalfClockSegment(fen),
+            GenerateFullMoveNumberSegment(fen)
         });
 
         return fenString;
@@ -293,5 +288,15 @@ public class FenStringService : IFenStringService
     public string GeneratePossibleEnPassantSegment(FenObject fen)
     {
         return Constants.FenStringEmptyFieldCharacter.ToString();
+    }
+
+    public string GenerateHalfClockSegment(FenObject fen)
+    {
+        return fen.HalfMoveClock.ToString();
+    }
+
+    public string GenerateFullMoveNumberSegment(FenObject fen)
+    {
+        return fen.FullMoveNumber.ToString();
     }
 }

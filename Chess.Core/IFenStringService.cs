@@ -25,5 +25,9 @@ public interface IFenStringService
 
     public string GenerateCastlingRightsSegment(FenObject fen);
 
-    public string GeneratePossibleEnPassantSegment(FenObject fen)
+    public string GeneratePossibleEnPassantSegment(FenObject fen);
+
+    public string GenerateHalfClockSegment(FenObject fen);
+
+    public string GenerateFullMoveNumberSegment(FenObject fen);
 }
