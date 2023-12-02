@@ -284,7 +284,11 @@ public class MoveService : IMoveService
         fen.ActivePlayer = fen.ActivePlayer.GetOtherPlayer();
 
         var move = moves.Single(move => from == move.From && to == move.To); // TODO: Should this be moved to the caller?
-        ApplyPossibleEnPassantTarget(fen, move);
+
+        if (fen.Grid.GetItemAtPositionOrDefault(move.From)?.CharacterCode == Constants.PawnDisplayCharacter)
+        {
+            ApplyPossibleEnPassantTarget(fen, move);
+        }
 
         if (move.IsCastling)
         {
@@ -294,11 +298,6 @@ public class MoveService : IMoveService
 
     private void ApplyPossibleEnPassantTarget(FenObject fen, Move move)
     {
-        if (fen.Grid.GetItemAtPositionOrDefault(move.From)?.CharacterCode != Constants.PawnDisplayCharacter)
-        {
-            return;
-        }
-
         if (fen.ActivePlayer == Player.White
             && move.From.Row == Constants.WhitePawnRow
             && move.From.Column == Constants.WhitePawnRow - 2)
