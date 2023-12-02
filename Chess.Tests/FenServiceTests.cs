@@ -17,8 +17,8 @@ public class FenServiceTests
     [InlineData("r1bqk1nr/ppp1p1p1/2P1Q2N/1P1BN1pK/n1Rpbp2/2R3P1/PPPP3P/5B2")]
     public void FenString_PiecePlacement_InputOutputMatch(string input)
     {
-        var grid = _fenStringService.ParsePiecePlacement(input);
-        var output = _fenStringService.GeneratePiecePlacementSegment(grid);
+        var grid = _fenStringService.ParseGridSegment(input);
+        var output = _fenStringService.GenerateGridSegment(grid);
 
         Assert.Equal(input, output);
     }

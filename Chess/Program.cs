@@ -78,9 +78,9 @@ public class GameService
     {
         var input = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b Qk e3 3 38";
 
-        var fen = _fenStringService.Parse(input);
+        var fen = _fenStringService.ParseFenString(input);
 
-        var fenString = (_fenStringService as FenStringService).GeneratePiecePlacementSegment(fen.Grid);
+        var fenString = (_fenStringService as FenStringService).GenerateGridSegment(fen.Grid);
 
         DisplayServiceQuickDraw(fen, new Point(1, 1));
 
@@ -105,8 +105,8 @@ public class GameService
         Grid.ForceSwap(fen.Grid, new Point(1, 7), new Point(2, 7));
         DisplayServiceQuickDraw(fen, new Point(7, 2));
 
-        var test = (_fenStringService as FenStringService).GeneratePiecePlacementSegment(fen.Grid);
-        fen.Grid = _fenStringService.ParsePiecePlacement(test);
+        var test = (_fenStringService as FenStringService).GenerateGridSegment(fen.Grid);
+        fen.Grid = _fenStringService.ParseGridSegment(test);
 
         DisplayServiceQuickDraw(fen, new Point(7, 2));
 
@@ -118,7 +118,7 @@ public class GameService
     private void GameLoop()
     {
         var input = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b - - 0 0";
-        var fen = _fenStringService.Parse(input);
+        var fen = _fenStringService.ParseFenString(input);
 
         while (true)
         {

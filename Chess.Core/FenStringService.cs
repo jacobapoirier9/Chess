@@ -1,11 +1,8 @@
-﻿using System.ComponentModel;
-using System.Text;
-
-namespace Chess.Core;
+﻿namespace Chess.Core;
 
 public class FenStringService : IFenStringService
 {
-    private string GetSegmentAndValidateExists(IEnumerable<string> items, int index, string missingSegment)
+    private string GetFenSegment(IEnumerable<string> items, int index, string missingSegment)
     {
         var item = items.ElementAtOrDefault(index);
         if (item is null)
@@ -14,26 +11,26 @@ public class FenStringService : IFenStringService
         return item;
     }
 
-    public FenObject Parse(string fen)
+    public FenObject ParseFenString(string fen)
     {
         var segments = fen.Split(Constants.FenStringSegmentSeparator);
 
         return new FenObject
         {
-            Grid = ParsePiecePlacement(GetSegmentAndValidateExists(segments, 0, nameof(FenObject.Grid))),
-            ActivePlayer = ParseActiveColor(GetSegmentAndValidateExists(segments, 1, nameof(FenObject.ActivePlayer))),
-            CastlingRights = ParseCastlingRights(GetSegmentAndValidateExists(segments, 2, nameof(FenObject.CastlingRights))),
-            PossibleEnPassantTarget = ParseEnPassantTarget(GetSegmentAndValidateExists(segments, 3, nameof(FenObject.PossibleEnPassantTarget))),
-            HalfMoveClock = ParseHalfMoveClock(GetSegmentAndValidateExists(segments, 4, nameof(FenObject.HalfMoveClock))),
-            FullMoveNumber = ParseFullMoveNumber(GetSegmentAndValidateExists(segments, 5, nameof(FenObject.FullMoveNumber))),
+            Grid = ParseGridSegment(GetFenSegment(segments, 0, nameof(FenObject.Grid))),
+            ActivePlayer = ParseActivePlayerSegment(GetFenSegment(segments, 1, nameof(FenObject.ActivePlayer))),
+            CastlingRights = ParseCasltingRightsSegment(GetFenSegment(segments, 2, nameof(FenObject.CastlingRights))),
+            PossibleEnPassantTarget = ParsePossibleEnPassantSegment(GetFenSegment(segments, 3, nameof(FenObject.PossibleEnPassantTarget))),
+            HalfMoveClock = ParseHalfClockSegment(GetFenSegment(segments, 4, nameof(FenObject.HalfMoveClock))),
+            FullMoveNumber = ParseFullMoveNumberSegment(GetFenSegment(segments, 5, nameof(FenObject.FullMoveNumber))),
         };
     }
 
-    public GridItem[,] ParsePiecePlacement(string piecePlacementSegment)
+    public GridItem[,] ParseGridSegment(string segment)
     {
         var grid = new GridItem[Constants.GridSize, Constants.GridSize];
 
-        var lines = piecePlacementSegment.Split(Constants.FenStringPiecePlacementLineSeparator);
+        var lines = segment.Split(Constants.FenStringPiecePlacementLineSeparator);
         for (var row = 0; row < lines.Length; row++)
         {
             var line = lines[row];
@@ -64,9 +61,9 @@ public class FenStringService : IFenStringService
         return grid;
     }
 
-    public Player ParseActiveColor(string activeColorSegment)
+    public Player ParseActivePlayerSegment(string segment)
     {
-        var player = Convert.ToChar(activeColorSegment) switch
+        var player = Convert.ToChar(segment) switch
         {
             'w' => Player.White,
             'b' => Player.Black,
@@ -77,12 +74,12 @@ public class FenStringService : IFenStringService
         return player;
     }
 
-    public List<CastlingRight> ParseCastlingRights(string castlingRightsSegment)
+    public List<CastlingRight> ParseCasltingRightsSegment(string segment)
     {
-        if (castlingRightsSegment == Constants.FenStringEmptyFieldCharacter.ToString())
+        if (segment == Constants.FenStringEmptyFieldCharacter.ToString())
             return null;
 
-        var castlingRights = castlingRightsSegment.Select(next => new CastlingRight
+        var castlingRights = segment.Select(next => new CastlingRight
         {
             CharacterCode = char.ToUpper(next),
             Player = char.IsLower(next) ? Player.Black : Player.White
@@ -91,24 +88,24 @@ public class FenStringService : IFenStringService
         return castlingRights;
     }
 
-    public Point? ParseEnPassantTarget(string possibleEnPassantTargetsSegment)
+    public Point? ParsePossibleEnPassantSegment(string segment)
     {
-        if (possibleEnPassantTargetsSegment == Constants.FenStringEmptyFieldCharacter.ToString())
+        if (segment == Constants.FenStringEmptyFieldCharacter.ToString())
             return null;
 
-        var point = ParseLetterNumberToNumberNumber(possibleEnPassantTargetsSegment);
+        var point = FriendlyToPoint(segment);
         return point;
     }
 
-    public int ParseHalfMoveClock(string halfmoveClockSegment)
+    public int ParseHalfClockSegment(string segment)
     {
-        var value = int.Parse(halfmoveClockSegment);
+        var value = int.Parse(segment);
         return value;
     }
 
-    public int ParseFullMoveNumber(string fullmoveNumberSegment)
+    public int ParseFullMoveNumberSegment(string segment)
     {
-        var value = int.Parse(fullmoveNumberSegment);
+        var value = int.Parse(segment);
         return value;
     }
 
@@ -116,7 +113,7 @@ public class FenStringService : IFenStringService
     /// <summary>
     /// Convert FEN string friendly coordinate to something the chess engine can use.
     /// </summary>
-    private Point ParseLetterNumberToNumberNumber(string letterNumber)
+    private Point FriendlyToPoint(string letterNumber)
     {
         var columnLetter = Convert.ToChar(letterNumber[0]);
         var rowLetter = Convert.ToChar(letterNumber[1]);
@@ -152,24 +149,25 @@ public class FenStringService : IFenStringService
         return new Point(rowNumber, columnNumber);
     }
 
-    public string Generate(FenObject fen)
+    public string GenerateFenString(FenObject fen)
     {
         var fenString = string.Join(Constants.FenStringSegmentSeparator, new string[]
         {
-            GeneratePiecePlacementSegment(fen.Grid),
-            GenerateActiveColorSegment(fen.ActivePlayer)
+            GenerateGridSegment(fen.Grid),
+            GenerateActivePlayerSegment(fen.ActivePlayer)
 
-
-            //CastlingRights = ParseCastlingRights(GetSegmentAndValidateExists(segments, 2, nameof(FenObject.CastlingRights))),
-            //PossibleEnPassantTarget = ParseEnPassantTarget(GetSegmentAndValidateExists(segments, 3, nameof(FenObject.PossibleEnPassantTarget))),
-            //HalfMoveClock = ParseHalfMoveClock(GetSegmentAndValidateExists(segments, 4, nameof(FenObject.HalfMoveClock))),
-            //FullMoveNumber = ParseFullMoveNumber(GetSegmentAndValidateExists(segments, 5, nameof(FenObject.FullMoveNumber))),
+            //Grid = ParseGridSegment(GetFenSegment(segments, 0, nameof(FenObject.Grid))),
+            //ActivePlayer = ParseActivePlayerSegment(GetFenSegment(segments, 1, nameof(FenObject.ActivePlayer))),
+            //CastlingRights = ParseCasltingRightsSegment(GetFenSegment(segments, 2, nameof(FenObject.CastlingRights))),
+            //PossibleEnPassantTarget = ParsePossibleEnPassantSegment(GetFenSegment(segments, 3, nameof(FenObject.PossibleEnPassantTarget))),
+            //HalfMoveClock = ParseHalfClockSegment(GetFenSegment(segments, 4, nameof(FenObject.HalfMoveClock))),
+            //FullMoveNumber = ParseFullMoveNumberSegment(GetFenSegment(segments, 5, nameof(FenObject.FullMoveNumber))),
         });
 
         return fenString;
     }
 
-    public string GeneratePiecePlacementSegment(GridItem[,] grid)
+    public string GenerateGridSegment(GridItem[,] grid)
     {
         var lines = new List<string>();
         for (var row = 0; row < grid.GetLength(0); row++)
@@ -223,7 +221,7 @@ public class FenStringService : IFenStringService
         return string.Join(Constants.FenStringPiecePlacementLineSeparator, lines);
     }
 
-    public string GenerateActiveColorSegment(Player player)
+    public string GenerateActivePlayerSegment(Player player)
     {
         var activeColorSegment = player switch
         {
