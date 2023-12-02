@@ -117,7 +117,7 @@ public class GameService
 
     private void GameLoop()
     {
-        var input = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b - - 0 0";
+        var input = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
         var fen = _fenStringService.ParseFenString(input);
 
         while (true)

@@ -22,4 +22,6 @@ public interface IFenStringService
     public string GenerateGridSegment(GridItem[,] grid);
 
     public string GenerateActivePlayerSegment(Player player);
+
+    public string GenerateCastlingRightsSegment(FenObject fen);
 }

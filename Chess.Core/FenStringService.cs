@@ -172,7 +172,8 @@ public class FenStringService : IFenStringService
         var fenString = string.Join(Constants.FenStringSegmentSeparator, new string[]
         {
             GenerateGridSegment(fen.Grid),
-            GenerateActivePlayerSegment(fen.ActivePlayer)
+            GenerateActivePlayerSegment(fen.ActivePlayer),
+            GenerateCastlingRightsSegment(fen)
 
             //Grid = ParseGridSegment(GetFenSegment(segments, 0, nameof(FenObject.Grid))),
             //ActivePlayer = ParseActivePlayerSegment(GetFenSegment(segments, 1, nameof(FenObject.ActivePlayer))),
@@ -248,6 +249,41 @@ public class FenStringService : IFenStringService
 
             _ => throw new IndexOutOfRangeException()
         };
+
+        return segment;
+    }
+
+    public string GenerateCastlingRightsSegment(FenObject fen)
+    {
+        var segment = string.Empty;
+
+        if (fen.CastlingRights.WhiteQueenSide 
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(7, 0))?.CharacterCode == Constants.RookDisplayCharacter
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(7, 3))?.CharacterCode == Constants.QueenDisplayCharacter)
+        {
+            segment += 'Q';
+        }
+       
+        if (fen.CastlingRights.WhiteKingSide
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(7, 4))?.CharacterCode == Constants.KingDisplayCharacter
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(7, 7))?.CharacterCode == Constants.RookDisplayCharacter)
+        {
+            segment += 'K';
+        }
+
+        if (fen.CastlingRights.BlackQueenSide
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(0, 0))?.CharacterCode == Constants.RookDisplayCharacter
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(0, 3))?.CharacterCode == Constants.QueenDisplayCharacter)
+        {
+            segment += 'q';
+        }
+
+        if (fen.CastlingRights.BlackKingSide
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(0, 4))?.CharacterCode == Constants.RookDisplayCharacter
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(0, 7))?.CharacterCode == Constants.RookDisplayCharacter)
+        {
+            segment += 'k';
+        }
 
         return segment;
     }
