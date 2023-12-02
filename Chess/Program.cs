@@ -132,25 +132,22 @@ public class GameService
             {
                 _displayService.Draw(fen);
 
-                Console.WriteLine("Player 1 is up");
-                var playerOneSelected = _playerOne.GetPieceSelectionPoint(fen);
-                var playerOneMoves = _moveService.GenerateMoves(fen, playerOneSelected);
-                _displayService.Draw(fen, playerOneSelected, playerOneMoves);
+                Console.WriteLine("{0} is up", fen.ActivePlayer);
 
-                var playerOneMoveTo = _playerOne.GetPieceMovementSelectionPoint(fen);
-                _moveService.ExecuteMove(fen, playerOneSelected, playerOneMoveTo, playerOneMoves);
-                _displayService.Draw(fen);
+                IPlayer currentPlayerService = fen.ActivePlayer switch
+                {
+                    Player.Black => _playerOne,
+                    Player.White => _playerTwo,
 
-                fen.ActivePlayer = fen.ActivePlayer.GetOtherPlayer();
+                    _ => throw new IndexOutOfRangeException()
+                };
 
-                Console.WriteLine("Player 2 is up");
-                var playerTwoSelected = _playerTwo.GetPieceSelectionPoint(fen);
-                var playerTwoMoves = _moveService.GenerateMoves(fen, playerTwoSelected);
-                _displayService.Draw(fen, playerTwoSelected, playerTwoMoves);
+                var selection = currentPlayerService.GetPieceSelectionPoint(fen);
+                var moves = _moveService.GenerateMoves(fen, selection);
+                _displayService.Draw(fen, selection, moves);
 
-                var playerTwoMoveTo = _playerTwo.GetPieceMovementSelectionPoint(fen);
-                _moveService.ExecuteMove(fen, playerTwoSelected, playerTwoMoveTo, playerTwoMoves);
-                _displayService.Draw(fen);
+                var target = currentPlayerService.GetPieceMovementSelectionPoint(fen);
+                _moveService.ExecuteMove(fen, selection, target, moves);
             }
             catch (Exception ex) // TODO: This is only here to provide an automatic break mechanism when the memory inputs run out of inputs
             {
