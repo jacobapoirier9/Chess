@@ -24,4 +24,6 @@ public interface IFenStringService
     public string GenerateActivePlayerSegment(Player player);
 
     public string GenerateCastlingRightsSegment(FenObject fen);
+
+    public string GeneratePossibleEnPassantSegment(FenObject fen)
 }

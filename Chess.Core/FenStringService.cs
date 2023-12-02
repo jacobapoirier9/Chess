@@ -173,7 +173,8 @@ public class FenStringService : IFenStringService
         {
             GenerateGridSegment(fen.Grid),
             GenerateActivePlayerSegment(fen.ActivePlayer),
-            GenerateCastlingRightsSegment(fen)
+            GenerateCastlingRightsSegment(fen),
+            GeneratePossibleEnPassantSegment(fen)
 
             //Grid = ParseGridSegment(GetFenSegment(segments, 0, nameof(FenObject.Grid))),
             //ActivePlayer = ParseActivePlayerSegment(GetFenSegment(segments, 1, nameof(FenObject.ActivePlayer))),
@@ -286,5 +287,11 @@ public class FenStringService : IFenStringService
         }
 
         return segment;
+    }
+
+    [Obsolete("Most likely will need to add grid history to determine if a pawn piece moved 2 spaces to qualify for en passant")]
+    public string GeneratePossibleEnPassantSegment(FenObject fen)
+    {
+        return Constants.FenStringEmptyFieldCharacter.ToString();
     }
 }
