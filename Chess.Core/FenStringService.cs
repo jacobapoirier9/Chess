@@ -156,7 +156,8 @@ public class FenStringService : IFenStringService
     {
         var fenString = string.Join(Constants.FenStringSegmentSeparator, new string[]
         {
-            GeneratePiecePlacementSegment(fen.Grid)
+            GeneratePiecePlacementSegment(fen.Grid),
+            GenerateActiveColorSegment(fen.ActivePlayer)
 
 
             //CastlingRights = ParseCastlingRights(GetSegmentAndValidateExists(segments, 2, nameof(FenObject.CastlingRights))),
