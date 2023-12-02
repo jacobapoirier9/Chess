@@ -163,5 +163,30 @@ public class MoveService : IMoveService
         }
 
         fen.Grid.ForceSwap(from, to);
+
+        var move = moves.Single(move => from == move.From && to == move.To); // TODO: Should this be moved to the caller?
+        ApplyPossibleEnPassantTarget(fen, move);
+    }
+
+    private void ApplyPossibleEnPassantTarget(FenObject fen, Move move)
+    {
+        if (fen.Grid.GetItemAtPositionOrDefault(move.From)?.CharacterCode != Constants.PawnDisplayCharacter)
+        {
+            return;
+        }
+
+        if (fen.ActivePlayer == Player.White
+            && move.From.Row == Constants.WhitePawnRow
+            && move.From.Column == Constants.WhitePawnRow - 2)
+        {
+            fen.PossibleEnPassantTarget = new Point(Constants.WhitePawnRow - 1, move.From.Column);
+        }
+
+        else if (fen.ActivePlayer == Player.Black
+            && move.From.Row == Constants.BlackPawnRow
+            && move.From.Column == Constants.BlackPawnRow + 2)
+        {
+            fen.PossibleEnPassantTarget = new Point(Constants.BlackPawnRow + 1, move.From.Column);
+        }
     }
 }
