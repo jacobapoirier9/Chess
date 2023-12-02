@@ -80,7 +80,7 @@ public class GameService
 
         var fen = _fenStringService.ParseFenString(input);
 
-        var fenString = (_fenStringService as FenStringService).GenerateGridSegment(fen.Grid);
+        var fenString = (_fenStringService as FenStringService).GenerateGridSegment(fen);
 
         DisplayServiceQuickDraw(fen, new Point(1, 1));
 
@@ -105,7 +105,7 @@ public class GameService
         Grid.ForceSwap(fen.Grid, new Point(1, 7), new Point(2, 7));
         DisplayServiceQuickDraw(fen, new Point(7, 2));
 
-        var test = (_fenStringService as FenStringService).GenerateGridSegment(fen.Grid);
+        var test = (_fenStringService as FenStringService).GenerateGridSegment(fen);
         fen.Grid = _fenStringService.ParseGridSegment(test);
 
         DisplayServiceQuickDraw(fen, new Point(7, 2));

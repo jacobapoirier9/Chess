@@ -208,8 +208,8 @@ public class FenStringService : IFenStringService
     {
         var fenString = string.Join(Constants.FenStringSegmentSeparatorCharacter, new string[]
         {
-            GenerateGridSegment(fen.Grid),
-            GenerateActivePlayerSegment(fen.ActivePlayer),
+            GenerateGridSegment(fen),
+            GenerateActivePlayerSegment(fen),
             GenerateCastlingRightsSegment(fen),
             GeneratePossibleEnPassantSegment(fen),
             GenerateHalfClockSegment(fen),
@@ -219,16 +219,16 @@ public class FenStringService : IFenStringService
         return fenString;
     }
 
-    public string GenerateGridSegment(GridItem[,] grid)
+    public string GenerateGridSegment(FenObject fen)
     {
         var lines = new List<string>();
-        for (var row = 0; row < grid.GetLength(0); row++)
+        for (var row = 0; row < fen.Grid.GetLength(0); row++)
         {
             var line = string.Empty;
 
-            for (var column = 0; column < grid.GetLength(1); column++)
+            for (var column = 0; column < fen.Grid.GetLength(1); column++)
             {
-                var item = grid.GetItemAtPositionOrDefault(new Point(row, column));
+                var item = fen.Grid.GetItemAtPositionOrDefault(new Point(row, column));
 
                 if (item is null || item.CharacterCode is null || item.Player is null)
                 {
@@ -273,9 +273,9 @@ public class FenStringService : IFenStringService
         return string.Join(Constants.FenStringGridItemLineSeparatorCharacter, lines);
     }
 
-    public string GenerateActivePlayerSegment(Player player)
+    public string GenerateActivePlayerSegment(FenObject fen)
     {
-        var segment = player switch
+        var segment = fen.ActivePlayer switch
         {
             Player.Black => "b",
             Player.White => "w",

@@ -19,9 +19,9 @@ public interface IFenStringService
 
     public string GenerateFenString(FenObject fen);
 
-    public string GenerateGridSegment(GridItem[,] grid);
+    public string GenerateGridSegment(FenObject fen);
 
-    public string GenerateActivePlayerSegment(Player player);
+    public string GenerateActivePlayerSegment(FenObject fen);
 
     public string GenerateCastlingRightsSegment(FenObject fen);
 

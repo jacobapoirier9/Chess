@@ -18,7 +18,7 @@ public class FenServiceTests
     public void FenString_PiecePlacement_InputOutputMatch(string input)
     {
         var grid = _fenStringService.ParseGridSegment(input);
-        var output = _fenStringService.GenerateGridSegment(grid);
+        var output = _fenStringService.GenerateGridSegment(new FenObject { Grid = grid });
 
         Assert.Equal(input, output);
     }
