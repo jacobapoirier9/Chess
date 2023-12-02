@@ -74,16 +74,34 @@ public class FenStringService : IFenStringService
         return player;
     }
 
-    public List<CastlingRight> ParseCasltingRightsSegment(string segment)
+    public CastlingRights ParseCasltingRightsSegment(string segment)
     {
-        if (segment == Constants.FenStringEmptyFieldCharacter.ToString())
-            return null;
+        var castlingRights = new CastlingRights();
 
-        var castlingRights = segment.Select(next => new CastlingRight
+        if (segment == Constants.FenStringEmptyFieldCharacter.ToString())
+            return castlingRights;
+
+        foreach (var character in segment)
         {
-            CharacterCode = char.ToUpper(next),
-            Player = char.IsLower(next) ? Player.Black : Player.White
-        }).ToList();
+            switch (character)
+            {
+                case 'q':
+                    castlingRights.BlackQueenSide = true;
+                    break;
+
+                case 'k':
+                    castlingRights.BlackKingSide = true;
+                    break;
+
+                case 'Q':
+                    castlingRights.WhiteQueenSide = true;
+                    break;
+
+                case 'K':
+                    castlingRights.WhiteKingSide = true;
+                    break;
+            }
+        }
 
         return castlingRights;
     }
@@ -223,7 +241,7 @@ public class FenStringService : IFenStringService
 
     public string GenerateActivePlayerSegment(Player player)
     {
-        var activeColorSegment = player switch
+        var segment = player switch
         {
             Player.Black => "b",
             Player.White => "w",
@@ -231,6 +249,6 @@ public class FenStringService : IFenStringService
             _ => throw new IndexOutOfRangeException()
         };
 
-        return activeColorSegment;
+        return segment;
     }
 }

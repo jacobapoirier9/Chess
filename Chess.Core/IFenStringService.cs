@@ -4,17 +4,17 @@ public interface IFenStringService
 {
     public FenObject ParseFenString(string fen);
 
-    public GridItem[,] ParseGridSegment(string piecePlacementSegment);
+    public GridItem[,] ParseGridSegment(string segment);
 
-    public Player ParseActivePlayerSegment(string activeColorSegment);
+    public Player ParseActivePlayerSegment(string segment);
 
-    public List<CastlingRight> ParseCasltingRightsSegment(string castlingRightsSegment);
+    public CastlingRights ParseCasltingRightsSegment(string segment);
 
-    public Point? ParsePossibleEnPassantSegment(string possibleEnPassantTargetsSegment);
+    public Point? ParsePossibleEnPassantSegment(string segment);
 
-    public int ParseHalfClockSegment(string halfmoveClockSegment);
+    public int ParseHalfClockSegment(string segment);
 
-    public int ParseFullMoveNumberSegment(string fullmoveNumberSegment);
+    public int ParseFullMoveNumberSegment(string segment);
 
 
     public string GenerateFenString(FenObject fen);

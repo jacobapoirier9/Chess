@@ -6,7 +6,7 @@ public class FenObject
 
     public Player ActivePlayer { get; set; }
 
-    public List<CastlingRight> CastlingRights { get; set; }
+    public CastlingRights CastlingRights { get; set; }
 
     public Point? PossibleEnPassantTarget { get; set; }
 
