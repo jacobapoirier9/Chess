@@ -279,7 +279,7 @@ public class FenStringService : IFenStringService
         }
 
         if (fen.CastlingRights.BlackKingSide
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(0, 4))?.CharacterCode == Constants.RookDisplayCharacter
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(0, 4))?.CharacterCode == Constants.KingDisplayCharacter
             && fen.Grid.GetItemAtPositionOrDefault(new Point(0, 7))?.CharacterCode == Constants.RookDisplayCharacter)
         {
             segment += 'k';
