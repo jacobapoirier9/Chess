@@ -159,6 +159,38 @@ public class MoveService : IMoveService
         AddCasltingMoves(fen, item, point, moves);
     }
 
+    private bool CanCastleWhiteQueenSide(FenObject fen)
+    {
+        return fen.ActivePlayer == Player.White
+            && fen.CastlingRights.WhiteQueenSide
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(7, 1)) is null
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(7, 2)) is null;
+    }
+
+    private bool CanCastleWhiteKingSide(FenObject fen)
+    {
+        return fen.ActivePlayer == Player.White
+            && fen.CastlingRights.WhiteKingSide
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(7, 5)) is null
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(7, 6)) is null;
+    }
+
+    private bool CanCastleBlackQueenSide(FenObject fen)
+    {
+        return fen.ActivePlayer == Player.Black
+            && fen.CastlingRights.BlackQueenSide
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(0, 1)) is null
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(0, 2)) is null;
+    }
+
+    private bool CanCastleBlackKingSide(FenObject fen)
+    {
+        return fen.ActivePlayer == Player.Black
+            && fen.CastlingRights.BlackKingSide
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(0, 5)) is null
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(0, 6)) is null;
+    }
+
     private void AddCasltingMoves(FenObject fen, GridItem item, Point point, List<Move> moves)
     {
         var move = new Move
@@ -167,10 +199,7 @@ public class MoveService : IMoveService
             IsCastling = true
         };
 
-        if (fen.ActivePlayer == Player.White 
-            && fen.CastlingRights.WhiteQueenSide
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(7, 1)) is null
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(7, 2)) is null)
+        if (CanCastleWhiteQueenSide(fen))
         {
             if (item.CharacterCode == Constants.QueenDisplayCharacter)
             {
@@ -186,10 +215,7 @@ public class MoveService : IMoveService
             }
         }
 
-        else if (fen.ActivePlayer == Player.White
-            && fen.CastlingRights.WhiteKingSide
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(7, 5)) is null
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(7, 6)) is null)
+        else if (CanCastleWhiteKingSide(fen))
         {
             if (item.CharacterCode == Constants.KingDisplayCharacter)
             {
@@ -205,11 +231,7 @@ public class MoveService : IMoveService
             }
         }
 
-        else if (fen.ActivePlayer == Player.Black
-            && fen.CastlingRights.BlackQueenSide
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(0, 1)) is null
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(0, 2)) is null
-            && item.CharacterCode == Constants.QueenDisplayCharacter)
+        else if (CanCastleBlackQueenSide(fen))
         {
             if (item.CharacterCode == Constants.QueenDisplayCharacter)
             {
@@ -225,11 +247,7 @@ public class MoveService : IMoveService
             }
         }
 
-        else if (fen.ActivePlayer == Player.Black
-            && fen.CastlingRights.BlackKingSide
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(0, 5)) is null
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(0, 6)) is null
-            && item.CharacterCode == Constants.KingDisplayCharacter)
+        else if (CanCastleBlackKingSide(fen))
         {
             if (item.CharacterCode == Constants.KingDisplayCharacter)
             {
@@ -267,6 +285,11 @@ public class MoveService : IMoveService
 
         var move = moves.Single(move => from == move.From && to == move.To); // TODO: Should this be moved to the caller?
         ApplyPossibleEnPassantTarget(fen, move);
+
+        if (move.IsCastling)
+        {
+            ApplyCastleRightsRemoval(fen, move);
+        }
     }
 
     private void ApplyPossibleEnPassantTarget(FenObject fen, Move move)
@@ -288,6 +311,29 @@ public class MoveService : IMoveService
             && move.From.Column == Constants.BlackPawnRow + 2)
         {
             fen.PossibleEnPassantTarget = new Point(Constants.BlackPawnRow + 1, move.From.Column);
+        }
+    }
+
+    private void ApplyCastleRightsRemoval(FenObject fen, Move move)
+    {
+        if (CanCastleWhiteQueenSide(fen))
+        {
+            fen.CastlingRights.WhiteQueenSide = false;
+        }
+
+        else if (CanCastleWhiteKingSide(fen))
+        {
+            fen.CastlingRights.WhiteKingSide = false;
+        }
+
+        else if (CanCastleBlackQueenSide(fen))
+        {
+            fen.CastlingRights.BlackQueenSide = false;
+        }
+
+        else if (CanCastleBlackKingSide(fen))
+        {
+            fen.CastlingRights.BlackKingSide = false;
         }
     }
 }

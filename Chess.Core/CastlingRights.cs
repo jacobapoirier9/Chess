@@ -1,6 +1,6 @@
 ﻿namespace Chess.Core;
 
-public struct CastlingRights
+public class CastlingRights
 {
     public bool BlackKingSide { get; set; }
 
