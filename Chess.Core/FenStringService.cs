@@ -13,7 +13,7 @@ public class FenStringService : IFenStringService
 
     public FenObject ParseFenString(string fen)
     {
-        var segments = fen.Split(Constants.FenStringSegmentSeparator);
+        var segments = fen.Split(Constants.FenStringSegmentSeparatorCharacter);
 
         return new FenObject
         {
@@ -30,7 +30,7 @@ public class FenStringService : IFenStringService
     {
         var grid = new GridItem[Constants.GridSize, Constants.GridSize];
 
-        var lines = segment.Split(Constants.FenStringPiecePlacementLineSeparator);
+        var lines = segment.Split(Constants.FenStringGridItemLineSeparatorCharacter);
         for (var row = 0; row < lines.Length; row++)
         {
             var line = lines[row];
@@ -78,7 +78,7 @@ public class FenStringService : IFenStringService
     {
         var castlingRights = new CastlingRights();
 
-        if (segment == Constants.FenStringEmptyFieldCharacter.ToString())
+        if (segment == Constants.FenStringEmptySegmentCharacter.ToString())
             return castlingRights;
 
         foreach (var character in segment)
@@ -108,7 +108,7 @@ public class FenStringService : IFenStringService
 
     public Point? ParsePossibleEnPassantSegment(string segment)
     {
-        if (segment == Constants.FenStringEmptyFieldCharacter.ToString())
+        if (segment == Constants.FenStringEmptySegmentCharacter.ToString())
             return null;
 
         var point = FriendlyToPoint(segment);
@@ -167,9 +167,46 @@ public class FenStringService : IFenStringService
         return new Point(rowNumber, columnNumber);
     }
 
+    // TODO: There's got to be a better way of handling this..
+    /// <summary>
+    /// Convert something the chess engine can use to friendly coordinates for FEN string.
+    /// </summary>
+    private string PointToFriendly(Point point)
+    {
+        var columnLetter = point.Column switch
+        {
+            0 => 'a',
+            1 => 'b',
+            2 => 'c',
+            3 => 'd',
+            4 => 'e',
+            5 => 'f',
+            6 => 'g',
+            7 => 'h',
+
+            _ => throw new IndexOutOfRangeException()
+        };
+
+        var rowLetter = point.Row switch
+        {
+            0 => '8',
+            1 => '7',
+            2 => '6',
+            3 => '5',
+            4 => '4',
+            5 => '3',
+            6 => '2',
+            7 => '1',
+
+            _ => throw new IndexOutOfRangeException()
+        };
+
+        return $"{columnLetter}{rowLetter}";
+    }
+
     public string GenerateFenString(FenObject fen)
     {
-        var fenString = string.Join(Constants.FenStringSegmentSeparator, new string[]
+        var fenString = string.Join(Constants.FenStringSegmentSeparatorCharacter, new string[]
         {
             GenerateGridSegment(fen.Grid),
             GenerateActivePlayerSegment(fen.ActivePlayer),
@@ -233,7 +270,7 @@ public class FenStringService : IFenStringService
             lines.Add(line);
         }
 
-        return string.Join(Constants.FenStringPiecePlacementLineSeparator, lines);
+        return string.Join(Constants.FenStringGridItemLineSeparatorCharacter, lines);
     }
 
     public string GenerateActivePlayerSegment(Player player)
@@ -284,10 +321,11 @@ public class FenStringService : IFenStringService
         return segment;
     }
 
-    [Obsolete("Most likely will need to add grid history to determine if a pawn piece moved 2 spaces to qualify for en passant")]
     public string GeneratePossibleEnPassantSegment(FenObject fen)
     {
-        return Constants.FenStringEmptyFieldCharacter.ToString();
+        return fen.PossibleEnPassantTarget.HasValue ?
+            PointToFriendly(fen.PossibleEnPassantTarget.Value) :
+            Constants.FenStringEmptySegmentCharacter.ToString();
     }
 
     public string GenerateHalfClockSegment(FenObject fen)

@@ -10,9 +10,9 @@ public static class Constants
     public const char PawnDisplayCharacter = 'P';
     public const char DefaultDisplayCharacter = ' ';
 
-    public const char FenStringSegmentSeparator = ' ';
-    public const char FenStringPiecePlacementLineSeparator = '/';
-    public const char FenStringEmptyFieldCharacter = '-';
+    public const char FenStringSegmentSeparatorCharacter = ' ';
+    public const char FenStringGridItemLineSeparatorCharacter = '/';
+    public const char FenStringEmptySegmentCharacter = '-';
 
     public const int GridSize = 8;
 
