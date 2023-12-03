@@ -163,32 +163,32 @@ public class MoveService : IMoveService
     {
         return fen.ActivePlayer == Player.White
             && fen.CastlingRights.WhiteQueenSide
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(7, 1)) is null
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(7, 2)) is null;
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(Constants.WhiteBaseLineRow, Constants.LeftKnightStartingColumn)) is null
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(Constants.WhiteBaseLineRow, Constants.LeftBishopStartingColumn)) is null;
     }
 
     private bool CanCastleWhiteKingSide(FenObject fen)
     {
         return fen.ActivePlayer == Player.White
             && fen.CastlingRights.WhiteKingSide
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(7, 5)) is null
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(7, 6)) is null;
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(Constants.WhiteBaseLineRow, Constants.RightBishopStartingColumn)) is null
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(Constants.WhiteBaseLineRow, Constants.RightKnightStartingColumn)) is null;
     }
 
     private bool CanCastleBlackQueenSide(FenObject fen)
     {
         return fen.ActivePlayer == Player.Black
             && fen.CastlingRights.BlackQueenSide
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(0, 1)) is null
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(0, 2)) is null;
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(Constants.BlackBaseLineRow, Constants.LeftKnightStartingColumn)) is null
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(Constants.BlackBaseLineRow, Constants.LeftBishopStartingColumn)) is null;
     }
 
     private bool CanCastleBlackKingSide(FenObject fen)
     {
         return fen.ActivePlayer == Player.Black
             && fen.CastlingRights.BlackKingSide
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(0, 5)) is null
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(0, 6)) is null;
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(Constants.BlackBaseLineRow, Constants.RightBishopStartingColumn)) is null
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(Constants.BlackBaseLineRow, Constants.RightKnightStartingColumn)) is null;
     }
 
     private void AddCasltingMoves(FenObject fen, GridItem item, Point point, List<Move> moves)
@@ -203,11 +203,11 @@ public class MoveService : IMoveService
         {
             if (item.CharacterCode == Constants.QueenDisplayCharacter)
             {
-                move.To = new Point(7, 0);
+                move.To = new Point(Constants.WhiteBaseLineRow, Constants.LeftRookStartingColumn);
             }
             else if (item.CharacterCode == Constants.RookDisplayCharacter)
             {
-                move.To = new Point(7, 3);
+                move.To = new Point(Constants.WhiteBaseLineRow, Constants.LeftQueenStartingColumn);
             }
             else
             {
@@ -219,11 +219,11 @@ public class MoveService : IMoveService
         {
             if (item.CharacterCode == Constants.KingDisplayCharacter)
             {
-                move.To = new Point(7, 7);
+                move.To = new Point(Constants.WhiteBaseLineRow, Constants.RightRookStartingColumn);
             }
             else if (item.CharacterCode == Constants.RookDisplayCharacter)
             {
-                move.To = new Point(7, 4);
+                move.To = new Point(Constants.WhiteBaseLineRow, Constants.RightKingStartingColumn);
             }
             else
             {
@@ -235,11 +235,11 @@ public class MoveService : IMoveService
         {
             if (item.CharacterCode == Constants.QueenDisplayCharacter)
             {
-                move.To = new Point(0, 0);
+                move.To = new Point(Constants.BlackBaseLineRow, Constants.LeftRookStartingColumn);
             }
             else if (item.CharacterCode == Constants.RookDisplayCharacter)
             {
-                move.To = new Point(0, 3);
+                move.To = new Point(Constants.BlackBaseLineRow, Constants.LeftQueenStartingColumn);
             }
             else
             {
@@ -251,11 +251,11 @@ public class MoveService : IMoveService
         {
             if (item.CharacterCode == Constants.KingDisplayCharacter)
             {
-                move.To = new Point(0, 7);
+                move.To = new Point(Constants.BlackBaseLineRow, Constants.RightRookStartingColumn);
             }
             else if (item.CharacterCode == Constants.RookDisplayCharacter)
             {
-                move.To = new Point(0, 4);
+                move.To = new Point(Constants.BlackBaseLineRow, Constants.RightRookStartingColumn);
             }
             else
             {
@@ -314,22 +314,22 @@ public class MoveService : IMoveService
     {
         if (fen.ActivePlayer == Player.Black && move.From.Row == Constants.BlackBaseLineRow)
         {
-            if (move.From.Column == Constants.LeftRookColumn || move.From.Column == Constants.LeftQueenColumn)
+            if (move.From.Column == Constants.LeftRookStartingColumn || move.From.Column == Constants.LeftQueenStartingColumn)
             {
                 fen.CastlingRights.BlackQueenSide = false;
             }
-            else if (move.From.Column == Constants.RightRookColumn || move.From.Column == Constants.RightKingColumn)
+            else if (move.From.Column == Constants.RightRookStartingColumn || move.From.Column == Constants.RightKingStartingColumn)
             {
                 fen.CastlingRights.BlackKingSide = false;
             }
         }
         else if (fen.ActivePlayer == Player.White && move.From.Row == Constants.WhiteBaseLineRow)
         {
-            if (move.From.Column == Constants.LeftRookColumn || move.From.Column == Constants.LeftQueenColumn)
+            if (move.From.Column == Constants.LeftRookStartingColumn || move.From.Column == Constants.LeftQueenStartingColumn)
             {
                 fen.CastlingRights.WhiteQueenSide = false;
             }
-            else if (move.From.Column == Constants.RightRookColumn || move.From.Column == Constants.RightKingColumn)
+            else if (move.From.Column == Constants.RightRookStartingColumn || move.From.Column == Constants.RightKingStartingColumn)
             {
                 fen.CastlingRights.WhiteKingSide = false;
             }

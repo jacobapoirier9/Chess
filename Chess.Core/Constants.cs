@@ -22,12 +22,12 @@ public static class Constants
     public const int WhiteBaseLineRow = 7;
     public const int WhitePawnRow = 6;
 
-    public const int LeftRookColumn = 0;
-    public const int LeftKnightColumn = 1;
-    public const int LeftBishopColumn = 2;
-    public const int LeftQueenColumn = 3;
-    public const int RightKingColumn = 4;
-    public const int RightBishopColumn = 5;
-    public const int RightKnightColumn = 6;
-    public const int RightRookColumn = 7;
+    public const int LeftRookStartingColumn = 0;
+    public const int LeftKnightStartingColumn = 1;
+    public const int LeftBishopStartingColumn = 2;
+    public const int LeftQueenStartingColumn = 3;
+    public const int RightKingStartingColumn = 4;
+    public const int RightBishopStartingColumn = 5;
+    public const int RightKnightStartingColumn = 6;
+    public const int RightRookStartingColumn = 7;
 }

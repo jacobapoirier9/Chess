@@ -290,13 +290,13 @@ public class FenStringService : IFenStringService
     {
         var segment = string.Empty;
 
-        if (fen.CastlingRights.WhiteQueenSide 
+        if (fen.CastlingRights.WhiteQueenSide
             && fen.Grid.GetItemAtPositionOrDefault(new Point(7, 0))?.CharacterCode == Constants.RookDisplayCharacter
             && fen.Grid.GetItemAtPositionOrDefault(new Point(7, 3))?.CharacterCode == Constants.QueenDisplayCharacter)
         {
             segment += 'Q';
         }
-       
+
         if (fen.CastlingRights.WhiteKingSide
             && fen.Grid.GetItemAtPositionOrDefault(new Point(7, 4))?.CharacterCode == Constants.KingDisplayCharacter
             && fen.Grid.GetItemAtPositionOrDefault(new Point(7, 7))?.CharacterCode == Constants.RookDisplayCharacter)
