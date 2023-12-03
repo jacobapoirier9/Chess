@@ -111,7 +111,7 @@ public class FenStringService : IFenStringService
         if (segment == Constants.FenStringEmptySegmentCharacter.ToString())
             return null;
 
-        var point = FriendlyToPoint(segment);
+        var point = PointMapping.ToPoint(segment);
         return point;
     }
 
@@ -127,82 +127,6 @@ public class FenStringService : IFenStringService
         return value;
     }
 
-    // TODO: There's got to be a better way of handling this..
-    /// <summary>
-    /// Convert FEN string friendly coordinate to something the chess engine can use.
-    /// </summary>
-    private Point FriendlyToPoint(string letterNumber)
-    {
-        var columnLetter = Convert.ToChar(letterNumber[0]);
-        var rowLetter = Convert.ToChar(letterNumber[1]);
-
-        var columnNumber = columnLetter switch
-        {
-            'a' => 0,
-            'b' => 1,
-            'c' => 2,
-            'd' => 3,
-            'e' => 4,
-            'f' => 5,
-            'g' => 6,
-            'h' => 7,
-
-            _ => throw new IndexOutOfRangeException()
-        };
-
-        var rowNumber = rowLetter switch
-        {
-            '8' => 0,
-            '7' => 1,
-            '6' => 2,
-            '5' => 3,
-            '4' => 4,
-            '3' => 5,
-            '2' => 6,
-            '1' => 7,
-
-            _ => throw new IndexOutOfRangeException()
-        };
-
-        return new Point(rowNumber, columnNumber);
-    }
-
-    // TODO: There's got to be a better way of handling this..
-    /// <summary>
-    /// Convert something the chess engine can use to friendly coordinates for FEN string.
-    /// </summary>
-    private string PointToFriendly(Point point)
-    {
-        var columnLetter = point.Column switch
-        {
-            0 => 'a',
-            1 => 'b',
-            2 => 'c',
-            3 => 'd',
-            4 => 'e',
-            5 => 'f',
-            6 => 'g',
-            7 => 'h',
-
-            _ => throw new IndexOutOfRangeException()
-        };
-
-        var rowLetter = point.Row switch
-        {
-            0 => '8',
-            1 => '7',
-            2 => '6',
-            3 => '5',
-            4 => '4',
-            5 => '3',
-            6 => '2',
-            7 => '1',
-
-            _ => throw new IndexOutOfRangeException()
-        };
-
-        return $"{columnLetter}{rowLetter}";
-    }
 
     public string GenerateFenString(FenObject fen)
     {
@@ -316,7 +240,7 @@ public class FenStringService : IFenStringService
     public string GeneratePossibleEnPassantSegment(FenObject fen)
     {
         return fen.PossibleEnPassantTarget.HasValue ?
-            PointToFriendly(fen.PossibleEnPassantTarget.Value) :
+            PointMapping.FromPoint(fen.PossibleEnPassantTarget.Value) :
             Constants.FenStringEmptySegmentCharacter.ToString();
     }
 
