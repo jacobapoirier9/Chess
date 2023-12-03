@@ -32,11 +32,24 @@ public class ConsoleDisplayService : IDisplayService
                 if (point.HasValue && moves is not null)
                 {
                     if (point.Value.Row == row && point.Value.Column == column)
-                        Console.BackgroundColor = ConsoleColor.Green;
+                        Console.BackgroundColor = ConsoleColor.DarkGreen;
 
                     var move = moves.SingleOrDefault(m => m.To.Row == row && m.To.Column == column);
                     if (move is not null)
-                        Console.BackgroundColor = move.IsAttack ? ConsoleColor.Red : ConsoleColor.Blue;
+                    {
+                        if (move.IsAttack)
+                        {
+                            Console.BackgroundColor = ConsoleColor.DarkRed;
+                        }
+                        else if (move.IsCastling)
+                        {
+                            Console.BackgroundColor = ConsoleColor.DarkMagenta;
+                        }
+                        else
+                        {
+                            Console.BackgroundColor = ConsoleColor.DarkBlue;
+                        }
+                    }
                 }
 
                 if (target?.CharacterCode is not null)
