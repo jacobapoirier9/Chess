@@ -290,30 +290,22 @@ public class FenStringService : IFenStringService
     {
         var segment = string.Empty;
 
-        if (fen.CastlingRights.WhiteQueenSide
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(7, 0))?.CharacterCode == Constants.RookDisplayCharacter
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(7, 3))?.CharacterCode == Constants.QueenDisplayCharacter)
+        if (fen.CastlingRights.WhiteQueenSide)
         {
             segment += 'Q';
         }
 
-        if (fen.CastlingRights.WhiteKingSide
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(7, 4))?.CharacterCode == Constants.KingDisplayCharacter
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(7, 7))?.CharacterCode == Constants.RookDisplayCharacter)
+        if (fen.CastlingRights.WhiteKingSide)
         {
             segment += 'K';
         }
 
-        if (fen.CastlingRights.BlackQueenSide
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(0, 0))?.CharacterCode == Constants.RookDisplayCharacter
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(0, 3))?.CharacterCode == Constants.QueenDisplayCharacter)
+        if (fen.CastlingRights.BlackQueenSide)
         {
             segment += 'q';
         }
 
-        if (fen.CastlingRights.BlackKingSide
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(0, 4))?.CharacterCode == Constants.KingDisplayCharacter
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(0, 7))?.CharacterCode == Constants.RookDisplayCharacter)
+        if (fen.CastlingRights.BlackKingSide)
         {
             segment += 'k';
         }
