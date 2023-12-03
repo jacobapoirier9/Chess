@@ -281,19 +281,16 @@ public class MoveService : IMoveService
 
         fen.Grid.ForceSwap(from, to);
 
-        fen.ActivePlayer = fen.ActivePlayer.GetOtherPlayer();
 
         var move = moves.Single(move => from == move.From && to == move.To); // TODO: Should this be moved to the caller?
 
+        ApplyCastlingRightsRemoval(fen, move);
         if (fen.Grid.GetItemAtPositionOrDefault(move.From)?.CharacterCode == Constants.PawnDisplayCharacter)
         {
             ApplyPossibleEnPassantTarget(fen, move);
         }
 
-        if (move.IsCastling)
-        {
-            ApplyCastleRightsRemoval(fen, move);
-        }
+        ApplyPlayerSwitch(fen);
     }
 
     private void ApplyPossibleEnPassantTarget(FenObject fen, Move move)
@@ -313,26 +310,34 @@ public class MoveService : IMoveService
         }
     }
 
-    private void ApplyCastleRightsRemoval(FenObject fen, Move move)
+    private void ApplyCastlingRightsRemoval(FenObject fen, Move move)
     {
-        if (CanCastleWhiteQueenSide(fen))
+        if (fen.ActivePlayer == Player.Black && move.From.Row == Constants.BlackBaseLineRow)
         {
-            fen.CastlingRights.WhiteQueenSide = false;
+            if (move.From.Column == Constants.LeftRookColumn || move.From.Column == Constants.LeftQueenColumn)
+            {
+                fen.CastlingRights.BlackQueenSide = false;
+            }
+            else if (move.From.Column == Constants.RightRookColumn || move.From.Column == Constants.RightKingColumn)
+            {
+                fen.CastlingRights.BlackKingSide = false;
+            }
         }
+        else if (fen.ActivePlayer == Player.White && move.From.Row == Constants.WhiteBaseLineRow)
+        {
+            if (move.From.Column == Constants.LeftRookColumn || move.From.Column == Constants.LeftQueenColumn)
+            {
+                fen.CastlingRights.WhiteQueenSide = false;
+            }
+            else if (move.From.Column == Constants.RightRookColumn || move.From.Column == Constants.RightKingColumn)
+            {
+                fen.CastlingRights.WhiteKingSide = false;
+            }
+        }
+    }
 
-        else if (CanCastleWhiteKingSide(fen))
-        {
-            fen.CastlingRights.WhiteKingSide = false;
-        }
-
-        else if (CanCastleBlackQueenSide(fen))
-        {
-            fen.CastlingRights.BlackQueenSide = false;
-        }
-
-        else if (CanCastleBlackKingSide(fen))
-        {
-            fen.CastlingRights.BlackKingSide = false;
-        }
+    private void ApplyPlayerSwitch(FenObject fen)
+    {
+        fen.ActivePlayer = fen.ActivePlayer.GetOtherPlayer();
     }
 }
