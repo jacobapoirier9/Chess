@@ -287,6 +287,7 @@ public class MoveService : IMoveService
         ApplyCastlingRightsRemoval(fen, move);
         ApplyPossibleEnPassantTarget(fen, move);
         ApplyHalfMoveClockTick(fen, move);
+        ApplyFullMoveNumberTick(fen);
 
         ApplyPlayerSwitch(fen);
     }
@@ -346,6 +347,14 @@ public class MoveService : IMoveService
         else
         {
             fen.HalfMoveClock++;
+        }
+    }
+
+    private void ApplyFullMoveNumberTick(FenObject fen)
+    {
+        if (fen.ActivePlayer == Player.Black)
+        {
+            fen.FullMoveNumber++;
         }
     }
 
