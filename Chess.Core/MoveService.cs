@@ -286,6 +286,7 @@ public class MoveService : IMoveService
 
         ApplyCastlingRightsRemoval(fen, move);
         ApplyPossibleEnPassantTarget(fen, move);
+        ApplyHalfMoveClockTick(fen, move);
 
         ApplyPlayerSwitch(fen);
     }
@@ -333,6 +334,18 @@ public class MoveService : IMoveService
             {
                 fen.CastlingRights.WhiteKingSide = false;
             }
+        }
+    }
+
+    private void ApplyHalfMoveClockTick(FenObject fen, Move move)
+    {
+        if (move.IsAttack || fen.Grid.GetItemAtPositionOrDefault(move.From)?.CharacterCode == Constants.PawnDisplayCharacter)
+        {
+            fen.HalfMoveClock = 1;
+        }
+        else
+        {
+            fen.HalfMoveClock++;
         }
     }
 

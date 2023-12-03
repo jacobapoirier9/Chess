@@ -134,8 +134,7 @@ public class GameService
 
     private void GameLoop()
     {
-        var input = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-        var fen = _fenStringService.ParseFenString(input);
+        var fen = _fenStringService.ParseFenString(Constants.StartingFenString);
 
         while (true)
         {
@@ -159,6 +158,11 @@ public class GameService
 
                 var target = currentPlayerService.GetPieceMovementSelectionPoint(fen);
                 _moveService.ExecuteMove(fen, selection, target, moves);
+
+                var fenString = _fenStringService.GenerateFenString(fen);
+                fen = _fenStringService.ParseFenString(fenString);
+
+                Console.WriteLine(fenString);
             }
             catch (Exception ex) // TODO: This is only here to provide an automatic break mechanism when the memory inputs run out of inputs
             {

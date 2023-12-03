@@ -2,6 +2,8 @@
 
 public static class Constants
 {
+    public const string StartingFenString = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+
     public const char RookDisplayCharacter = 'R';
     public const char KnightDisplayCharacter = 'N';
     public const char BishopDisplayCharacter = 'B';
