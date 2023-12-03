@@ -19,7 +19,7 @@ public static class Program
             {
                 services.AddSingleton<IFenStringService, FenStringService>();
 
-                RegisterCastlingRightsGameInputs(services);
+                RegisterOriginalGameInputs(services);
 
                 services.AddSingleton<IMoveService, MoveService>();
                 services.AddSingleton<IDisplayService, ConsoleDisplayService>();
@@ -44,30 +44,30 @@ public static class Program
     private static void RegisterOriginalGameInputs(IServiceCollection services)
     {
         // WHITE
-        services.AddSingleton<IPlayerTwo>(new MemoryInputPlayer(
-            "64", "54",
-            "71", "52",
-            "61", "41",
-            "72", "50",
-            "73", "70",
-            "75", "64",
-            "76", "57",
-            "74", "75",
-            "75", "74",
-            "74", "00"
+        services.AddSingleton<IPlayerOne>(new MemoryInputPlayer(
+            "e2", "e3",
+            "b1", "c3",
+            "b2", "b4",
+            "c1", "a3",
+            "d1", "a1",
+            "f1", "e2",
+            "g1", "h3",
+            "e1", "f1",
+            "f1", "e1",
+            "e1", "a8"
         ));
 
         // BLACK
-        services.AddSingleton<IPlayerOne>(new MemoryInputPlayer(
-            "17", "27",
-            "27", "37",
-            "16", "26",
-            "26", "36",
-            "36", "46",
-            "46", "56",
-            "10", "20",
-            "20", "30",
-            "30", "40"
+        services.AddSingleton<IPlayerTwo>(new MemoryInputPlayer(
+            "h7", "h6",
+            "h6", "h5",
+            "g7", "g6",
+            "g6", "g5",
+            "g5", "g4",
+            "g4", "g3",
+            "a7", "a6",
+            "a6", "a5",
+            "a5", "a4"
         ));
     }
 }
@@ -159,8 +159,8 @@ public class GameService
 
                 IPlayer currentPlayerService = fen.ActivePlayer switch
                 {
-                    Player.Black => _playerOne,
-                    Player.White => _playerTwo,
+                    Player.White => _playerOne,
+                    Player.Black => _playerTwo,
 
                     _ => throw new IndexOutOfRangeException()
                 };

@@ -15,13 +15,13 @@ public class ConsoleDisplayService : IDisplayService
 
         Console.BackgroundColor = _defaultConsoleColor;
         Console.WriteLine();
-        Console.WriteLine($"   | 0  1  2  3  4  5  6  7 ");
+        Console.WriteLine($"   | a  b  c  d  e  f  g  h ");
         Console.WriteLine($"---+------------------------");
 
         for (var row = 0; row < Constants.GridSize; row++)
         {
             Console.BackgroundColor = _defaultConsoleColor;
-            Console.Write(" {0} |", row);
+            Console.Write(" {0} |", PointMapping.ToFriendlyRow(row));
 
             for (var column = 0; column < Constants.GridSize; column++)
             {
