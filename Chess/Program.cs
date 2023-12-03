@@ -19,37 +19,7 @@ public static class Program
             {
                 services.AddSingleton<IFenStringService, FenStringService>();
 
-                //services.AddSingleton<IPlayerOne, ConsoleInputPlayer>();
-                //services.AddSingleton<IPlayerTwo, ConsoleInputPlayer>();
-
-                // WHITE
-                services.AddSingleton<IPlayerTwo>(new MemoryInputPlayer(
-                    "64", "54",
-                    "71", "52",
-                    "61", "41",
-                    "72", "50",
-                    "73", "70",
-                    "75", "64",
-                    "76", "57",
-                    "74", "75",
-                    "75", "74",
-                    "74", "00"
-                ));
-
-                // BLACK
-                services.AddSingleton<IPlayerOne>(new MemoryInputPlayer(
-                    "17", "27",
-                    "27", "37",
-                    "16", "26",
-                    "26", "36",
-                    "36", "46",
-                    "46", "56",
-                    "10", "20",
-                    "20", "30",
-                    "30", "40"
-                ));
-
-                //services.AddSingleton<IPlayerService, PlayerService>();
+                RegisterCastlingRightsGameInputs(services);
 
                 services.AddSingleton<IMoveService, MoveService>();
                 services.AddSingleton<IDisplayService, ConsoleDisplayService>();
@@ -58,6 +28,47 @@ public static class Program
             });
 
         await client.RunAsync(args);
+    }
+
+    private static void RegisterCastlingRightsGameInputs(IServiceCollection services)
+    {
+        // WHITE
+        services.AddSingleton<IPlayerTwo>(new MemoryInputPlayer(
+        ));
+
+        // BLACK
+        services.AddSingleton<IPlayerOne>(new MemoryInputPlayer(
+        ));
+    }
+
+    private static void RegisterOriginalGameInputs(IServiceCollection services)
+    {
+        // WHITE
+        services.AddSingleton<IPlayerTwo>(new MemoryInputPlayer(
+            "64", "54",
+            "71", "52",
+            "61", "41",
+            "72", "50",
+            "73", "70",
+            "75", "64",
+            "76", "57",
+            "74", "75",
+            "75", "74",
+            "74", "00"
+        ));
+
+        // BLACK
+        services.AddSingleton<IPlayerOne>(new MemoryInputPlayer(
+            "17", "27",
+            "27", "37",
+            "16", "26",
+            "26", "36",
+            "36", "46",
+            "46", "56",
+            "10", "20",
+            "20", "30",
+            "30", "40"
+        ));
     }
 }
 
@@ -90,8 +101,7 @@ public class GameService
         _displayService.Draw(fen, point, moves);
     }
 
-    [Surface("start-test")]
-    public void StartTest()
+    private void RunManulOverrideGame()
     {
         var input = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b Qk e3 3 38";
 
@@ -126,10 +136,13 @@ public class GameService
         fen.Grid = _fenStringService.ParseGridSegment(test);
 
         DisplayServiceQuickDraw(fen, new Point(7, 2));
+    }
 
+    [Surface("start-test")]
+    public void StartTest()
+    {
         GameLoop();
         return;
-
     }
 
     private void GameLoop()
