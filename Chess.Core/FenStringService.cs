@@ -214,19 +214,14 @@ public class FenStringService : IFenStringService
     {
         var segment = string.Empty;
 
-        if (fen.CastlingRights.WhiteQueenSide)
-        {
-            segment += 'Q';
-        }
-
         if (fen.CastlingRights.WhiteKingSide)
         {
             segment += 'K';
         }
 
-        if (fen.CastlingRights.BlackQueenSide)
+        if (fen.CastlingRights.WhiteQueenSide)
         {
-            segment += 'q';
+            segment += 'Q';
         }
 
         if (fen.CastlingRights.BlackKingSide)
@@ -234,7 +229,12 @@ public class FenStringService : IFenStringService
             segment += 'k';
         }
 
-        return segment;
+        if (fen.CastlingRights.BlackQueenSide)
+        {
+            segment += 'q';
+        }
+
+        return string.IsNullOrEmpty(segment) ? Constants.FenStringEmptySegmentCharacter.ToString() : segment;
     }
 
     public string GeneratePossibleEnPassantSegment(FenObject fen)

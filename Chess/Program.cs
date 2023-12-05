@@ -19,7 +19,7 @@ public static class Program
             {
                 services.AddSingleton<IFenStringService, FenStringService>();
 
-                RegisterOriginalGameInputs(services);
+                RegisterCastlingRightsGameInputs(services);
 
                 services.AddSingleton<IMoveService, MoveService>();
                 services.AddSingleton<IDisplayService, ConsoleDisplayService>();
@@ -33,11 +33,19 @@ public static class Program
     private static void RegisterCastlingRightsGameInputs(IServiceCollection services)
     {
         // WHITE
-        services.AddSingleton<IPlayerTwo>(new MemoryInputPlayer(
+        services.AddSingleton<IPlayerOne>(new MemoryInputPlayer(
+            "b2", "b3",
+            "c1", "a3",
+            "b1", "c3",
+            "d1", "a1"
         ));
 
         // BLACK
-        services.AddSingleton<IPlayerOne>(new MemoryInputPlayer(
+        services.AddSingleton<IPlayerTwo>(new MemoryInputPlayer(
+            "b7", "b6",
+            "c8", "a6",
+            "b8", "c6",
+            "d8", "a8"
         ));
     }
 
@@ -101,6 +109,12 @@ public class GameService
         _displayService.Draw(fen, point, moves);
     }
 
+    private void DisplayServiceQuickDraw(FenObject fen, string input)
+    {
+        var point = PointMapping.ToPoint(input);
+        DisplayServiceQuickDraw(fen, point);
+    }
+
     private void RunManulOverrideGame()
     {
         var input = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b Qk e3 3 38";
@@ -141,7 +155,13 @@ public class GameService
     [Surface("start-test")]
     public void StartTest()
     {
-        GameLoop();
+        var fen = _fenStringService.ParseFenString("r2q4/8/8/8/8/8/8/8 b QKqk - 8 5");
+        _displayService.Draw(fen);
+
+        DisplayServiceQuickDraw(fen, "d8");
+
+
+        //GameLoop();
         return;
     }
 
