@@ -2,9 +2,7 @@
 
 public class GridItem
 {
-    public override string ToString() => $"{Player} {CharacterCode}";
+    public override string ToString() => CharacterCode.ToString();
 
     public char? CharacterCode { get; set; }
-
-    public Player? Player { get; set; }
 }

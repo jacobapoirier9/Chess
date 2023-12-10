@@ -52,8 +52,7 @@ public class FenStringService : IFenStringService
 
                 grid[row, column] = new GridItem
                 {
-                    CharacterCode = char.ToUpper(next),
-                    Player = char.IsLower(next) ? Player.Black : Player.White
+                    CharacterCode = next
                 };
 
                 column++;
@@ -156,7 +155,7 @@ public class FenStringService : IFenStringService
             {
                 var item = fen.Grid.GetItemAtPositionOrDefault(new Point(row, column));
 
-                if (item is null || item.CharacterCode is null || item.Player is null)
+                if (item is null || item.CharacterCode is null)
                 {
                     if (line.Length > 0)
                     {
@@ -181,15 +180,7 @@ public class FenStringService : IFenStringService
                 }
                 else
                 {
-                    var next = item.Player switch
-                    {
-                        Player.Black => char.ToLower(item.CharacterCode.Value),
-                        Player.White => item.CharacterCode.Value,
-
-                        _ => throw new IndexOutOfRangeException()
-                    };
-
-                    line += next;
+                    line += item.CharacterCode;
                 }
             }
 

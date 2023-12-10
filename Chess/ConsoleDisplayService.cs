@@ -56,10 +56,29 @@ public class ConsoleDisplayService : IDisplayService
 
                 if (target?.CharacterCode is not null)
                 {
-                    Console.Write(target.Player.ToString().First());
+                    switch (target?.CharacterCode.Value)
+                    {
+                        case Constants.CharacterCode.BlackPawn:
+                        case Constants.CharacterCode.BlackRook:
+                        case Constants.CharacterCode.BlackKnight:
+                        case Constants.CharacterCode.BlackBishop:
+                        case Constants.CharacterCode.BlackKing:
+                        case Constants.CharacterCode.BlackQueen:
+                            Console.Write('B');
+                            break;
+
+                        case Constants.CharacterCode.WhitePawn:
+                        case Constants.CharacterCode.WhiteRook:
+                        case Constants.CharacterCode.WhiteKnight:
+                        case Constants.CharacterCode.WhiteBishop:
+                        case Constants.CharacterCode.WhiteKing:
+                        case Constants.CharacterCode.WhiteQueen:
+                            Console.Write('W');
+                            break;
+                    }
+
                     Console.Write(target.CharacterCode);
-                    //Console.Write((int)target.Player);
-                    Console.Write(Constants.DefaultDisplayCharacter);
+                    Console.Write(' ');
                 }
                 else
                 {

@@ -12,28 +12,37 @@ public class MoveService : IMoveService
 
         switch (item.CharacterCode)
         {
-            case Constants.PawnDisplayCharacter:
+            case Constants.CharacterCode.BlackPawn:
+            case Constants.CharacterCode.WhitePawn:
                 AddPawnMoves(fen, item, point, moves);
                 break;
 
-            case Constants.KingDisplayCharacter:
+            case Constants.CharacterCode.BlackKing:
+            case Constants.CharacterCode.WhiteKing:
                 AddKingMoves(fen, item, point, moves);
                 break;
 
-            case Constants.QueenDisplayCharacter:
+            case Constants.CharacterCode.BlackQueen:
+            case Constants.CharacterCode.WhiteQueen:
                 AddQueenMoves(fen, item, point, moves);
                 break;
 
-            case Constants.BishopDisplayCharacter:
+            case Constants.CharacterCode.BlackBishop:
+            case Constants.CharacterCode.WhiteBishop:
                 AddBishopMoves(fen, item, point, moves);
                 break;
 
-            case Constants.KnightDisplayCharacter:
+            case Constants.CharacterCode.BlackKnight:
+            case Constants.CharacterCode.WhiteKnight:
                 AddKnightMoves(fen, item, point, moves);
                 break;
 
-            case Constants.RookDisplayCharacter:
+            case Constants.CharacterCode.BlackRook:
+            case Constants.CharacterCode.WhiteRook:
                 AddRookMoves(fen, item, point, moves);
+                break;
+
+            default:
                 break;
         }
 
@@ -54,8 +63,15 @@ public class MoveService : IMoveService
             {
                 var target = grid.GetItemAtPositionOrDefault(targetPoint);
 
-                if (target is not null && target.Player == item.Player)
+                if (target is not null
+                    && 
+                    (
+                        (char.IsLower(target.CharacterCode.Value) && char.IsLower(target.CharacterCode.Value))
+                        || (char.IsUpper(target.CharacterCode.Value) && char.IsUpper(target.CharacterCode.Value))
+                    ))
+                {
                     break;
+                }
 
                 var move = new Move
                 {
@@ -63,7 +79,12 @@ public class MoveService : IMoveService
                     To = targetPoint,
                 };
 
-                if (target is not null && target.Player == item.Player?.GetOtherPlayer())
+                if (target is not null
+                    &&
+                    (
+                        (char.IsLower(target.CharacterCode.Value) && char.IsUpper(target.CharacterCode.Value))
+                        || (char.IsLower(target.CharacterCode.Value) && char.IsUpper(target.CharacterCode.Value))
+                    ))
                 {
                     if (allowAttack)
                     {
@@ -85,14 +106,14 @@ public class MoveService : IMoveService
 
     private void AddPawnMoves(FenObject fen, GridItem item, Point point, List<Move> moves)
     {
-        switch (item.Player)
+        switch (item.CharacterCode)
         {
-            case Player.Black:
+            case Constants.CharacterCode.BlackPawn:
                 var blackSlide = point.Row == Constants.BlackPawnRow ? 2 : 1;
                 AddCalculatedMove(fen, item, point, moves, 1, 0, blackSlide, false);
                 break;
 
-            case Player.White:
+            case Constants.CharacterCode.WhitePawn:
                 var whiteSlide = point.Row == Constants.WhitePawnRow ? 2 : 1;
                 AddCalculatedMove(fen, item, point, moves, -1, 0, whiteSlide, false);
                 break;
@@ -203,11 +224,11 @@ public class MoveService : IMoveService
 
         if (CanCastleWhiteQueenSide(fen))
         {
-            if (item.CharacterCode == Constants.QueenDisplayCharacter)
+            if (item.CharacterCode == Constants.CharacterCode.WhiteQueen)
             {
                 move.To = new Point(Constants.WhiteBaseLineRow, Constants.LeftRookStartingColumn);
             }
-            else if (item.CharacterCode == Constants.RookDisplayCharacter)
+            else if (item.CharacterCode == Constants.CharacterCode.WhiteRook)
             {
                 move.To = new Point(Constants.WhiteBaseLineRow, Constants.LeftQueenStartingColumn);
             }
@@ -219,11 +240,11 @@ public class MoveService : IMoveService
 
         else if (CanCastleWhiteKingSide(fen))
         {
-            if (item.CharacterCode == Constants.KingDisplayCharacter)
+            if (item.CharacterCode == Constants.CharacterCode.WhiteKing)
             {
                 move.To = new Point(Constants.WhiteBaseLineRow, Constants.RightRookStartingColumn);
             }
-            else if (item.CharacterCode == Constants.RookDisplayCharacter)
+            else if (item.CharacterCode == Constants.CharacterCode.WhiteRook)
             {
                 move.To = new Point(Constants.WhiteBaseLineRow, Constants.RightKingStartingColumn);
             }
@@ -235,11 +256,11 @@ public class MoveService : IMoveService
 
         else if (CanCastleBlackQueenSide(fen))
         {
-            if (item.CharacterCode == Constants.QueenDisplayCharacter)
+            if (item.CharacterCode == Constants.CharacterCode.BlackQueen)
             {
                 move.To = new Point(Constants.BlackBaseLineRow, Constants.LeftRookStartingColumn);
             }
-            else if (item.CharacterCode == Constants.RookDisplayCharacter)
+            else if (item.CharacterCode == Constants.CharacterCode.BlackRook)
             {
                 move.To = new Point(Constants.BlackBaseLineRow, Constants.LeftQueenStartingColumn);
             }
@@ -251,13 +272,13 @@ public class MoveService : IMoveService
 
         else if (CanCastleBlackKingSide(fen))
         {
-            if (item.CharacterCode == Constants.KingDisplayCharacter)
+            if (item.CharacterCode == Constants.CharacterCode.BlackKing)
             {
                 move.To = new Point(Constants.BlackBaseLineRow, Constants.RightRookStartingColumn);
             }
-            else if (item.CharacterCode == Constants.RookDisplayCharacter)
+            else if (item.CharacterCode == Constants.CharacterCode.BlackRook)
             {
-                move.To = new Point(Constants.BlackBaseLineRow, Constants.RightRookStartingColumn);
+                move.To = new Point(Constants.BlackBaseLineRow, Constants.RightKingStartingColumn);
             }
             else
             {
@@ -296,21 +317,21 @@ public class MoveService : IMoveService
 
     private void ApplyPossibleEnPassantTarget(FenObject fen, Move move)
     {
-        if (fen.Grid.GetItemAtPositionOrDefault(move.From)?.CharacterCode == Constants.PawnDisplayCharacter)
+        switch (fen.Grid.GetItemAtPositionOrDefault(move.From)?.CharacterCode)
         {
-            if (fen.ActivePlayer == Player.White
-                && move.From.Row == Constants.WhitePawnRow
-                && move.From.Column == Constants.WhitePawnRow - 2)
-            {
-                fen.PossibleEnPassantTarget = new Point(Constants.WhitePawnRow - 1, move.From.Column);
-            }
+            case Constants.CharacterCode.WhitePawn:
+                if (move.From.Row == Constants.WhitePawnRow && move.From.Column == Constants.WhitePawnRow - 2)
+                {
+                    fen.PossibleEnPassantTarget = new Point(Constants.WhitePawnRow - 1, move.From.Column);
+                }
+                break;
 
-            else if (fen.ActivePlayer == Player.Black
-                && move.From.Row == Constants.BlackPawnRow
-                && move.From.Column == Constants.BlackPawnRow + 2)
-            {
-                fen.PossibleEnPassantTarget = new Point(Constants.BlackPawnRow + 1, move.From.Column);
-            }
+            case Constants.CharacterCode.BlackPawn:
+                if (move.From.Row == Constants.BlackPawnRow && move.From.Column == Constants.BlackPawnRow + 2)
+                {
+                    fen.PossibleEnPassantTarget = new Point(Constants.BlackPawnRow + 1, move.From.Column);
+                }
+                break;
         }
     }
 
@@ -342,7 +363,8 @@ public class MoveService : IMoveService
 
     private void ApplyHalfMoveClockTick(FenObject fen, Move move)
     {
-        if (move.IsAttack || fen.Grid.GetItemAtPositionOrDefault(move.From)?.CharacterCode == Constants.PawnDisplayCharacter)
+        var characterCode = fen.Grid.GetItemAtPositionOrDefault(move.From)?.CharacterCode;
+        if (move.IsAttack || characterCode == Constants.CharacterCode.BlackPawn || characterCode == Constants.CharacterCode.WhitePawn)
         {
             fen.HalfMoveClock = 1;
         }

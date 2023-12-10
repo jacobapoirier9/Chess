@@ -21,7 +21,7 @@ public static class Program
             {
                 services.AddSingleton<IFenStringService, FenStringService>();
 
-                RegisterCastlingRightsGameInputs(services);
+                RegisterOriginalGameInputs(services);
 
                 services.AddSingleton<IMoveService, MoveService>();
                 services.AddSingleton<IDisplayService, ConsoleDisplayService>();
@@ -163,7 +163,7 @@ public class GameService
         DisplayServiceQuickDraw(fen, "d8");
 
 
-        //GameLoop();
+        GameLoop();
         return;
     }
 
