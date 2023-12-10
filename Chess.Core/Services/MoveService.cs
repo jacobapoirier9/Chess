@@ -6,7 +6,7 @@ public class MoveService : IMoveService
 {
     public List<Move> GenerateMoves(FenObject fen, Point point)
     {
-        var item = fen.Grid.GetItemAtPosition(point);
+        var item = fen.Grid.GetItem(point);
 
         var moves = new List<Move>();
 
@@ -64,7 +64,7 @@ public class MoveService : IMoveService
 
             if (grid.CheckValidBounds(targetPoint))
             {
-                var target = grid.GetItemAtPositionOrDefault(targetPoint);
+                var target = grid.GetItemOrDefault(targetPoint);
 
                 if (target is not null
                     && 
@@ -191,8 +191,8 @@ public class MoveService : IMoveService
 
         if (fen.ActivePlayer == Player.White
             && fen.CastlingRights.WhiteQueenSide
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(Constants.WhiteBaseLineRow, Constants.LeftKnightStartingColumn)) is null
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(Constants.WhiteBaseLineRow, Constants.LeftBishopStartingColumn)) is null)
+            && fen.Grid.GetItemOrDefault(new Point(Constants.WhiteBaseLineRow, Constants.LeftKnightStartingColumn)) is null
+            && fen.Grid.GetItemOrDefault(new Point(Constants.WhiteBaseLineRow, Constants.LeftBishopStartingColumn)) is null)
         {
             if (item == Constants.CharacterCode.WhiteQueen)
             {
@@ -210,8 +210,8 @@ public class MoveService : IMoveService
 
         else if (fen.ActivePlayer == Player.White
             && fen.CastlingRights.WhiteKingSide
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(Constants.WhiteBaseLineRow, Constants.RightBishopStartingColumn)) is null
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(Constants.WhiteBaseLineRow, Constants.RightKnightStartingColumn)) is null)
+            && fen.Grid.GetItemOrDefault(new Point(Constants.WhiteBaseLineRow, Constants.RightBishopStartingColumn)) is null
+            && fen.Grid.GetItemOrDefault(new Point(Constants.WhiteBaseLineRow, Constants.RightKnightStartingColumn)) is null)
         {
             if (item == Constants.CharacterCode.WhiteKing)
             {
@@ -229,8 +229,8 @@ public class MoveService : IMoveService
 
         else if (fen.ActivePlayer == Player.Black
             && fen.CastlingRights.BlackQueenSide
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(Constants.BlackBaseLineRow, Constants.LeftKnightStartingColumn)) is null
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(Constants.BlackBaseLineRow, Constants.LeftBishopStartingColumn)) is null)
+            && fen.Grid.GetItemOrDefault(new Point(Constants.BlackBaseLineRow, Constants.LeftKnightStartingColumn)) is null
+            && fen.Grid.GetItemOrDefault(new Point(Constants.BlackBaseLineRow, Constants.LeftBishopStartingColumn)) is null)
         {
             if (item == Constants.CharacterCode.BlackQueen)
             {
@@ -248,8 +248,8 @@ public class MoveService : IMoveService
 
         else if (fen.ActivePlayer == Player.Black
             && fen.CastlingRights.BlackKingSide
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(Constants.BlackBaseLineRow, Constants.RightBishopStartingColumn)) is null
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(Constants.BlackBaseLineRow, Constants.RightKnightStartingColumn)) is null)
+            && fen.Grid.GetItemOrDefault(new Point(Constants.BlackBaseLineRow, Constants.RightBishopStartingColumn)) is null
+            && fen.Grid.GetItemOrDefault(new Point(Constants.BlackBaseLineRow, Constants.RightKnightStartingColumn)) is null)
         {
             if (item == Constants.CharacterCode.BlackKing)
             {
@@ -296,7 +296,7 @@ public class MoveService : IMoveService
 
     private void ApplyPossibleEnPassantTarget(FenObject fen, Move move)
     {
-        switch (fen.Grid.GetItemAtPositionOrDefault(move.From))
+        switch (fen.Grid.GetItemOrDefault(move.From))
         {
             case Constants.CharacterCode.WhitePawn:
                 if (move.From.Row == Constants.WhitePawnRow && move.From.Column == Constants.WhitePawnRow - 2)
@@ -342,7 +342,7 @@ public class MoveService : IMoveService
 
     private void ApplyHalfMoveClockTick(FenObject fen, Move move)
     {
-        var characterCode = fen.Grid.GetItemAtPositionOrDefault(move.From);
+        var characterCode = fen.Grid.GetItemOrDefault(move.From);
         if (move.IsAttack || characterCode == Constants.CharacterCode.BlackPawn || characterCode == Constants.CharacterCode.WhitePawn)
         {
             fen.HalfMoveClock = 1;

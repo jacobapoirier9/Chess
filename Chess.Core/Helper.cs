@@ -36,7 +36,7 @@ public static class Helper
     }
 
 
-    public static T GetItemAtPositionOrDefault<T>(this T[,] array, Point point)
+    public static T GetItemOrDefault<T>(this T[,] array, Point point)
     {
         if (array.CheckValidBounds(point))
             return array[point.Row, point.Column];
@@ -44,9 +44,9 @@ public static class Helper
         return default;
     }
 
-    public static T GetItemAtPosition<T>(this T[,] array, Point point)
+    public static T GetItem<T>(this T[,] array, Point point)
     {
-        var item = array.GetItemAtPositionOrDefault(point);
+        var item = array.GetItemOrDefault(point);
 
         if (item is null)
             throw new IndexOutOfRangeException($"Invalid grid coordinates ({point.Row}, {point.Column})");

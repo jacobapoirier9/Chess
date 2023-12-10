@@ -150,7 +150,7 @@ public class FenStringService : IFenStringService
 
             for (var column = 0; column < fen.Grid.GetLength(1); column++)
             {
-                var item = fen.Grid.GetItemAtPositionOrDefault(new Point(row, column));
+                var item = fen.Grid.GetItemOrDefault(new Point(row, column));
 
                 if (item is null || item is null)
                 {

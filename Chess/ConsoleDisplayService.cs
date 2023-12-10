@@ -29,7 +29,7 @@ public class ConsoleDisplayService : IDisplayService
 
             for (var column = 0; column < Constants.GridSize; column++)
             {
-                var target = fen.Grid.GetItemAtPositionOrDefault(new Point(row, column));
+                var target = fen.Grid.GetItemOrDefault(new Point(row, column));
 
                 Console.BackgroundColor = ConsoleColor.Black;
 
