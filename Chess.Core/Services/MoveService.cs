@@ -10,7 +10,7 @@ public class MoveService : IMoveService
 
         var moves = new List<Move>();
 
-        switch (item.CharacterCode)
+        switch (item)
         {
             case Constants.CharacterCode.BlackPawn:
             case Constants.CharacterCode.WhitePawn:
@@ -49,7 +49,7 @@ public class MoveService : IMoveService
         return moves;
     }
 
-    private void AddCalculatedMove(FenObject fen, GridItem item, Point point, List<Move> moves, sbyte deltaRow, sbyte deltaColumn, int? maxSlide, bool allowAttack)
+    private void AddCalculatedMove(FenObject fen, char? item, Point point, List<Move> moves, sbyte deltaRow, sbyte deltaColumn, int? maxSlide, bool allowAttack)
     {
         var grid = fen.Grid;
         for (var i = 1; i <= (maxSlide ?? Constants.GridSize); i++)
@@ -66,8 +66,8 @@ public class MoveService : IMoveService
                 if (target is not null
                     && 
                     (
-                        (char.IsLower(target.CharacterCode.Value) && char.IsLower(target.CharacterCode.Value))
-                        || (char.IsUpper(target.CharacterCode.Value) && char.IsUpper(target.CharacterCode.Value))
+                        (char.IsLower(target.Value) && char.IsLower(target.Value))
+                        || (char.IsUpper(target.Value) && char.IsUpper(target.Value))
                     ))
                 {
                     break;
@@ -82,8 +82,8 @@ public class MoveService : IMoveService
                 if (target is not null
                     &&
                     (
-                        (char.IsLower(target.CharacterCode.Value) && char.IsUpper(target.CharacterCode.Value))
-                        || (char.IsLower(target.CharacterCode.Value) && char.IsUpper(target.CharacterCode.Value))
+                        (char.IsLower(target.Value) && char.IsUpper(target.Value))
+                        || (char.IsLower(target.Value) && char.IsUpper(target.Value))
                     ))
                 {
                     if (allowAttack)
@@ -104,9 +104,9 @@ public class MoveService : IMoveService
         }
     }
 
-    private void AddPawnMoves(FenObject fen, GridItem item, Point point, List<Move> moves)
+    private void AddPawnMoves(FenObject fen, char? item, Point point, List<Move> moves)
     {
-        switch (item.CharacterCode)
+        switch (item)
         {
             case Constants.CharacterCode.BlackPawn:
                 var blackSlide = point.Row == Constants.BlackPawnRow ? 2 : 1;
@@ -120,7 +120,7 @@ public class MoveService : IMoveService
         }
     }
 
-    private void AddKingMoves(FenObject fen, GridItem item, Point point, List<Move> moves)
+    private void AddKingMoves(FenObject fen, char? item, Point point, List<Move> moves)
     {
         AddCalculatedMove(fen, item, point, moves, 1, 1, 1, true);
         AddCalculatedMove(fen, item, point, moves, 1, 0, 1, true);
@@ -136,7 +136,7 @@ public class MoveService : IMoveService
         AddCasltingMoves(fen, item, point, moves);
     }
 
-    private void AddQueenMoves(FenObject fen, GridItem item, Point point, List<Move> moves)
+    private void AddQueenMoves(FenObject fen, char? item, Point point, List<Move> moves)
     {
         AddCalculatedMove(fen, item, point, moves, 1, 1, null, true);
         AddCalculatedMove(fen, item, point, moves, 1, 0, null, true);
@@ -152,7 +152,7 @@ public class MoveService : IMoveService
         AddCasltingMoves(fen, item, point, moves);
     }
 
-    private void AddBishopMoves(FenObject fen, GridItem item, Point point, List<Move> moves)
+    private void AddBishopMoves(FenObject fen, char? item, Point point, List<Move> moves)
     {
         AddCalculatedMove(fen, item, point, moves, 1, 1, null, true);
         AddCalculatedMove(fen, item, point, moves, 1, -1, null, true);
@@ -160,7 +160,7 @@ public class MoveService : IMoveService
         AddCalculatedMove(fen, item, point, moves, -1, -1, null, true);
     }
 
-    private void AddKnightMoves(FenObject fen, GridItem item, Point point, List<Move> moves)
+    private void AddKnightMoves(FenObject fen, char? item, Point point, List<Move> moves)
     {
         AddCalculatedMove(fen, item, point, moves, 1, 2, 1, true);
         AddCalculatedMove(fen, item, point, moves, 1, -2, 1, true);
@@ -173,7 +173,7 @@ public class MoveService : IMoveService
         AddCalculatedMove(fen, item, point, moves, -2, -1, 1, true);
     }
 
-    private void AddRookMoves(FenObject fen, GridItem item, Point point, List<Move> moves)
+    private void AddRookMoves(FenObject fen, char? item, Point point, List<Move> moves)
     {
         AddCalculatedMove(fen, item, point, moves, 1, 0, null, true);
         AddCalculatedMove(fen, item, point, moves, -1, 0, null, true);
@@ -214,7 +214,7 @@ public class MoveService : IMoveService
             && fen.Grid.GetItemAtPositionOrDefault(new Point(Constants.BlackBaseLineRow, Constants.RightKnightStartingColumn)) is null;
     }
 
-    private void AddCasltingMoves(FenObject fen, GridItem item, Point point, List<Move> moves)
+    private void AddCasltingMoves(FenObject fen, char? item, Point point, List<Move> moves)
     {
         var move = new Move
         {
@@ -224,11 +224,11 @@ public class MoveService : IMoveService
 
         if (CanCastleWhiteQueenSide(fen))
         {
-            if (item.CharacterCode == Constants.CharacterCode.WhiteQueen)
+            if (item == Constants.CharacterCode.WhiteQueen)
             {
                 move.To = new Point(Constants.WhiteBaseLineRow, Constants.LeftRookStartingColumn);
             }
-            else if (item.CharacterCode == Constants.CharacterCode.WhiteRook)
+            else if (item == Constants.CharacterCode.WhiteRook)
             {
                 move.To = new Point(Constants.WhiteBaseLineRow, Constants.LeftQueenStartingColumn);
             }
@@ -240,11 +240,11 @@ public class MoveService : IMoveService
 
         else if (CanCastleWhiteKingSide(fen))
         {
-            if (item.CharacterCode == Constants.CharacterCode.WhiteKing)
+            if (item == Constants.CharacterCode.WhiteKing)
             {
                 move.To = new Point(Constants.WhiteBaseLineRow, Constants.RightRookStartingColumn);
             }
-            else if (item.CharacterCode == Constants.CharacterCode.WhiteRook)
+            else if (item == Constants.CharacterCode.WhiteRook)
             {
                 move.To = new Point(Constants.WhiteBaseLineRow, Constants.RightKingStartingColumn);
             }
@@ -256,11 +256,11 @@ public class MoveService : IMoveService
 
         else if (CanCastleBlackQueenSide(fen))
         {
-            if (item.CharacterCode == Constants.CharacterCode.BlackQueen)
+            if (item == Constants.CharacterCode.BlackQueen)
             {
                 move.To = new Point(Constants.BlackBaseLineRow, Constants.LeftRookStartingColumn);
             }
-            else if (item.CharacterCode == Constants.CharacterCode.BlackRook)
+            else if (item == Constants.CharacterCode.BlackRook)
             {
                 move.To = new Point(Constants.BlackBaseLineRow, Constants.LeftQueenStartingColumn);
             }
@@ -272,11 +272,11 @@ public class MoveService : IMoveService
 
         else if (CanCastleBlackKingSide(fen))
         {
-            if (item.CharacterCode == Constants.CharacterCode.BlackKing)
+            if (item == Constants.CharacterCode.BlackKing)
             {
                 move.To = new Point(Constants.BlackBaseLineRow, Constants.RightRookStartingColumn);
             }
-            else if (item.CharacterCode == Constants.CharacterCode.BlackRook)
+            else if (item == Constants.CharacterCode.BlackRook)
             {
                 move.To = new Point(Constants.BlackBaseLineRow, Constants.RightKingStartingColumn);
             }
@@ -317,7 +317,7 @@ public class MoveService : IMoveService
 
     private void ApplyPossibleEnPassantTarget(FenObject fen, Move move)
     {
-        switch (fen.Grid.GetItemAtPositionOrDefault(move.From)?.CharacterCode)
+        switch (fen.Grid.GetItemAtPositionOrDefault(move.From))
         {
             case Constants.CharacterCode.WhitePawn:
                 if (move.From.Row == Constants.WhitePawnRow && move.From.Column == Constants.WhitePawnRow - 2)
@@ -363,7 +363,7 @@ public class MoveService : IMoveService
 
     private void ApplyHalfMoveClockTick(FenObject fen, Move move)
     {
-        var characterCode = fen.Grid.GetItemAtPositionOrDefault(move.From)?.CharacterCode;
+        var characterCode = fen.Grid.GetItemAtPositionOrDefault(move.From);
         if (move.IsAttack || characterCode == Constants.CharacterCode.BlackPawn || characterCode == Constants.CharacterCode.WhitePawn)
         {
             fen.HalfMoveClock = 1;

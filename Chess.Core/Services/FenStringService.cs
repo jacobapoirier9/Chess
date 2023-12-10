@@ -28,9 +28,9 @@ public class FenStringService : IFenStringService
         };
     }
 
-    public GridItem[,] ParseGridSegment(string segment)
+    public char?[,] ParseGridSegment(string segment)
     {
-        var grid = new GridItem[Constants.GridSize, Constants.GridSize];
+        var grid = new char?[Constants.GridSize, Constants.GridSize];
 
         var lines = segment.Split(Constants.FenStringGridItemLineSeparatorCharacter);
         for (var row = 0; row < lines.Length; row++)
@@ -50,10 +50,7 @@ public class FenStringService : IFenStringService
                     continue;
                 }
 
-                grid[row, column] = new GridItem
-                {
-                    CharacterCode = next
-                };
+                grid[row, column] = next;
 
                 column++;
             }
@@ -155,7 +152,7 @@ public class FenStringService : IFenStringService
             {
                 var item = fen.Grid.GetItemAtPositionOrDefault(new Point(row, column));
 
-                if (item is null || item.CharacterCode is null)
+                if (item is null || item is null)
                 {
                     if (line.Length > 0)
                     {
@@ -180,7 +177,7 @@ public class FenStringService : IFenStringService
                 }
                 else
                 {
-                    line += item.CharacterCode;
+                    line += item;
                 }
             }
 

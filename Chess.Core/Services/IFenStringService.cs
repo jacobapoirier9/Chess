@@ -6,7 +6,7 @@ public interface IFenStringService
 {
     public FenObject ParseFenString(string fen);
 
-    public GridItem[,] ParseGridSegment(string segment);
+    public char?[,] ParseGridSegment(string segment);
 
     public Player ParseActivePlayerSegment(string segment);
 

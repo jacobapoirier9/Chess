@@ -2,7 +2,7 @@
 
 public class FenObject
 {
-    public GridItem[,] Grid { get; set; }
+    public char?[,] Grid { get; set; }
 
     public Player ActivePlayer { get; set; }
 

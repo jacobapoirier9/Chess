@@ -21,27 +21,6 @@ public static class Constants
         public const char WhitePawn = 'P';
     }
 
-    [Obsolete]
-    public const char RookDisplayCharacter = 'R';
-
-    [Obsolete]
-    public const char KnightDisplayCharacter = 'N';
-
-    [Obsolete]
-    public const char BishopDisplayCharacter = 'B';
-
-    [Obsolete]
-    public const char QueenDisplayCharacter = 'Q';
-
-    [Obsolete]
-    public const char KingDisplayCharacter = 'K';
-
-    [Obsolete]
-    public const char PawnDisplayCharacter = 'P';
-
-    [Obsolete]
-    public const char DefaultDisplayCharacter = ' ';
-
     public const char FenStringSegmentSeparatorCharacter = ' ';
     public const char FenStringGridItemLineSeparatorCharacter = '/';
     public const char FenStringEmptySegmentCharacter = '-';

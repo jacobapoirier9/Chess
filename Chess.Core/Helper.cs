@@ -26,7 +26,7 @@ public static class Helper
 
     public static bool IsBetweenInclusive(this int number, int low, int high) => low <= number && number <= high;
 
-    public static void ForceSwap(this GridItem[,] grid, Point fromPoint, Point toPoint)
+    public static void ForceSwap<T>(this T[,] grid, Point fromPoint, Point toPoint)
     {
         var from = grid[fromPoint.Row, fromPoint.Column];
         var to = grid[toPoint.Row, toPoint.Column];

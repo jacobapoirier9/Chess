@@ -15,6 +15,7 @@ public class ConsoleDisplayService : IDisplayService
         if (!_preserveConsole)
             Console.Clear();
 
+        Console.ForegroundColor = ConsoleColor.White;
         Console.BackgroundColor = _defaultConsoleColor;
         Console.WriteLine();
         Console.WriteLine($"   | a  b  c  d  e  f  g  h ");
@@ -22,6 +23,7 @@ public class ConsoleDisplayService : IDisplayService
 
         for (var row = 0; row < Constants.GridSize; row++)
         {
+            Console.ForegroundColor = ConsoleColor.White;
             Console.BackgroundColor = _defaultConsoleColor;
             Console.Write(" {0} |", PointMapping.ToFriendlyRow(row));
 
@@ -54,30 +56,12 @@ public class ConsoleDisplayService : IDisplayService
                     }
                 }
 
-                if (target?.CharacterCode is not null)
+                if (target.HasValue)
                 {
-                    switch (target?.CharacterCode.Value)
-                    {
-                        case Constants.CharacterCode.BlackPawn:
-                        case Constants.CharacterCode.BlackRook:
-                        case Constants.CharacterCode.BlackKnight:
-                        case Constants.CharacterCode.BlackBishop:
-                        case Constants.CharacterCode.BlackKing:
-                        case Constants.CharacterCode.BlackQueen:
-                            Console.Write('B');
-                            break;
+                    Console.ForegroundColor = char.IsLower(target.Value) ?  ConsoleColor.DarkGray : ConsoleColor.White;
 
-                        case Constants.CharacterCode.WhitePawn:
-                        case Constants.CharacterCode.WhiteRook:
-                        case Constants.CharacterCode.WhiteKnight:
-                        case Constants.CharacterCode.WhiteBishop:
-                        case Constants.CharacterCode.WhiteKing:
-                        case Constants.CharacterCode.WhiteQueen:
-                            Console.Write('W');
-                            break;
-                    }
-
-                    Console.Write(target.CharacterCode);
+                    Console.Write(' ');
+                    Console.Write(target);
                     Console.Write(' ');
                 }
                 else
