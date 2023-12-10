@@ -182,38 +182,6 @@ public class MoveService : IMoveService
         AddCasltingMoves(fen, item, point, moves);
     }
 
-    private bool CanCastleWhiteQueenSide(FenObject fen)
-    {
-        return fen.ActivePlayer == Player.White
-            && fen.CastlingRights.WhiteQueenSide
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(Constants.WhiteBaseLineRow, Constants.LeftKnightStartingColumn)) is null
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(Constants.WhiteBaseLineRow, Constants.LeftBishopStartingColumn)) is null;
-    }
-
-    private bool CanCastleWhiteKingSide(FenObject fen)
-    {
-        return fen.ActivePlayer == Player.White
-            && fen.CastlingRights.WhiteKingSide
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(Constants.WhiteBaseLineRow, Constants.RightBishopStartingColumn)) is null
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(Constants.WhiteBaseLineRow, Constants.RightKnightStartingColumn)) is null;
-    }
-
-    private bool CanCastleBlackQueenSide(FenObject fen)
-    {
-        return fen.ActivePlayer == Player.Black
-            && fen.CastlingRights.BlackQueenSide
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(Constants.BlackBaseLineRow, Constants.LeftKnightStartingColumn)) is null
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(Constants.BlackBaseLineRow, Constants.LeftBishopStartingColumn)) is null;
-    }
-
-    private bool CanCastleBlackKingSide(FenObject fen)
-    {
-        return fen.ActivePlayer == Player.Black
-            && fen.CastlingRights.BlackKingSide
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(Constants.BlackBaseLineRow, Constants.RightBishopStartingColumn)) is null
-            && fen.Grid.GetItemAtPositionOrDefault(new Point(Constants.BlackBaseLineRow, Constants.RightKnightStartingColumn)) is null;
-    }
-
     private void AddCasltingMoves(FenObject fen, char? item, Point point, List<Move> moves)
     {
         var move = new Move
@@ -222,7 +190,10 @@ public class MoveService : IMoveService
             IsCastling = true
         };
 
-        if (CanCastleWhiteQueenSide(fen))
+        if (fen.ActivePlayer == Player.White
+            && fen.CastlingRights.WhiteQueenSide
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(Constants.WhiteBaseLineRow, Constants.LeftKnightStartingColumn)) is null
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(Constants.WhiteBaseLineRow, Constants.LeftBishopStartingColumn)) is null)
         {
             if (item == Constants.CharacterCode.WhiteQueen)
             {
@@ -238,7 +209,10 @@ public class MoveService : IMoveService
             }
         }
 
-        else if (CanCastleWhiteKingSide(fen))
+        else if (fen.ActivePlayer == Player.White
+            && fen.CastlingRights.WhiteKingSide
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(Constants.WhiteBaseLineRow, Constants.RightBishopStartingColumn)) is null
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(Constants.WhiteBaseLineRow, Constants.RightKnightStartingColumn)) is null)
         {
             if (item == Constants.CharacterCode.WhiteKing)
             {
@@ -254,7 +228,10 @@ public class MoveService : IMoveService
             }
         }
 
-        else if (CanCastleBlackQueenSide(fen))
+        else if (fen.ActivePlayer == Player.Black
+            && fen.CastlingRights.BlackQueenSide
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(Constants.BlackBaseLineRow, Constants.LeftKnightStartingColumn)) is null
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(Constants.BlackBaseLineRow, Constants.LeftBishopStartingColumn)) is null)
         {
             if (item == Constants.CharacterCode.BlackQueen)
             {
@@ -270,7 +247,10 @@ public class MoveService : IMoveService
             }
         }
 
-        else if (CanCastleBlackKingSide(fen))
+        else if (fen.ActivePlayer == Player.Black
+            && fen.CastlingRights.BlackKingSide
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(Constants.BlackBaseLineRow, Constants.RightBishopStartingColumn)) is null
+            && fen.Grid.GetItemAtPositionOrDefault(new Point(Constants.BlackBaseLineRow, Constants.RightKnightStartingColumn)) is null)
         {
             if (item == Constants.CharacterCode.BlackKing)
             {
