@@ -1,4 +1,6 @@
-﻿namespace Chess.Core;
+﻿using Chess.Core.Models;
+
+namespace Chess.Core;
 
 public static class PointMapping
 {

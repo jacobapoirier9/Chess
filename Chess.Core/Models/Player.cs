@@ -1,4 +1,4 @@
-﻿namespace Chess.Core;
+﻿namespace Chess.Core.Models;
 
 public enum Player
 {

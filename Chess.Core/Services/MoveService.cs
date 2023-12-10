@@ -1,4 +1,6 @@
-﻿namespace Chess.Core;
+﻿using Chess.Core.Models;
+
+namespace Chess.Core.Services;
 
 public class MoveService : IMoveService
 {

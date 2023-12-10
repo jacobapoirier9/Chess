@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Chess.Core;
+namespace Chess.Core.Models;
 
 public readonly struct Point
 {
@@ -23,7 +23,7 @@ public readonly struct Point
     public static bool operator ==(Point left, Point right) => left.Row == right.Row && left.Column == right.Column;
     public static bool operator !=(Point left, Point right) => left.Row != right.Row || left.Column != right.Column;
 
-    public override int GetHashCode() => Helper.GenerateHashCode(this);
+    public override int GetHashCode() => this.GenerateHashCode();
 
-    public override bool Equals([NotNullWhen(true)] object obj) => this.Row == ((Point)obj).Row && this.Column == ((Point)obj).Column;
+    public override bool Equals([NotNullWhen(true)] object obj) => Row == ((Point)obj).Row && Column == ((Point)obj).Column;
 }

@@ -1,4 +1,4 @@
-﻿namespace Chess.Core;
+﻿namespace Chess.Core.Services;
 
 public interface IPlayerTwo : IPlayer
 {

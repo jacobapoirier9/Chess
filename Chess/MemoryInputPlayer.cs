@@ -1,4 +1,6 @@
 ﻿using Chess.Core;
+using Chess.Core.Models;
+using Chess.Core.Services;
 using CommandSurfacer.Services;
 
 namespace Chess;

@@ -1,4 +1,4 @@
-﻿using System.Data.Common;
+﻿using Chess.Core.Models;
 
 namespace Chess.Core;
 
