@@ -13,8 +13,11 @@ public class MoveService : IMoveService
         switch (item)
         {
             case Constants.CharacterCode.BlackPawn:
+                AddBlackPawnMoves(fen, item, point, moves);
+                break;
+
             case Constants.CharacterCode.WhitePawn:
-                AddPawnMoves(fen, item, point, moves);
+                AddWhitePawnMoves(fen, item, point, moves);
                 break;
 
             case Constants.CharacterCode.BlackKing:
@@ -104,20 +107,16 @@ public class MoveService : IMoveService
         }
     }
 
-    private void AddPawnMoves(FenObject fen, char? item, Point point, List<Move> moves)
+    private void AddBlackPawnMoves(FenObject fen, char? item, Point point, List<Move> moves)
     {
-        switch (item)
-        {
-            case Constants.CharacterCode.BlackPawn:
-                var blackSlide = point.Row == Constants.BlackPawnRow ? 2 : 1;
-                AddCalculatedMove(fen, item, point, moves, 1, 0, blackSlide, false);
-                break;
+        var blackSlide = point.Row == Constants.BlackPawnRow ? 2 : 1;
+        AddCalculatedMove(fen, item, point, moves, 1, 0, blackSlide, false);
+    }
 
-            case Constants.CharacterCode.WhitePawn:
-                var whiteSlide = point.Row == Constants.WhitePawnRow ? 2 : 1;
-                AddCalculatedMove(fen, item, point, moves, -1, 0, whiteSlide, false);
-                break;
-        }
+    private void AddWhitePawnMoves(FenObject fen, char? item, Point point, List<Move> moves)
+    {
+        var whiteSlide = point.Row == Constants.WhitePawnRow ? 2 : 1;
+        AddCalculatedMove(fen, item, point, moves, -1, 0, whiteSlide, false);
     }
 
     private void AddKingMoves(FenObject fen, char? item, Point point, List<Move> moves)
