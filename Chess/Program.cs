@@ -127,8 +127,8 @@ public class GameService
 
         DisplayServiceQuickDraw(fen, new Point(1, 1));
 
-        Grid.ForceSwap(fen.Grid, new Point(6, 1), new Point(2, 2));
-        Grid.ForceSwap(fen.Grid, new Point(6, 3), new Point(2, 4));
+        Helper.ForceSwap(fen.Grid, new Point(6, 1), new Point(2, 2));
+        Helper.ForceSwap(fen.Grid, new Point(6, 3), new Point(2, 4));
 
         DisplayServiceQuickDraw(fen, new Point(1, 3));
 
@@ -136,16 +136,16 @@ public class GameService
 
         DisplayServiceQuickDraw(fen, new Point(7, 1));
 
-        Grid.ForceSwap(fen.Grid, new Point(7, 5), new Point(4, 4));
+        Helper.ForceSwap(fen.Grid, new Point(7, 5), new Point(4, 4));
         DisplayServiceQuickDraw(fen, new Point(4, 4));
-        Grid.ForceSwap(fen.Grid, new Point(4, 4), new Point(7, 5));
+        Helper.ForceSwap(fen.Grid, new Point(4, 4), new Point(7, 5));
 
         DisplayServiceQuickDraw(fen, new Point(7, 2));
 
-        Grid.ForceSwap(fen.Grid, new Point(7, 7), new Point(4, 0));
+        Helper.ForceSwap(fen.Grid, new Point(7, 7), new Point(4, 0));
         DisplayServiceQuickDraw(fen, new Point(4, 0));
 
-        Grid.ForceSwap(fen.Grid, new Point(1, 7), new Point(2, 7));
+        Helper.ForceSwap(fen.Grid, new Point(1, 7), new Point(2, 7));
         DisplayServiceQuickDraw(fen, new Point(7, 2));
 
         var test = (_fenStringService as FenStringService).GenerateGridSegment(fen);
