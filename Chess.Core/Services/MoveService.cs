@@ -69,8 +69,8 @@ public class MoveService : IMoveService
                 if (target is not null
                     && 
                     (
-                        (char.IsLower(target.Value) && char.IsLower(target.Value))
-                        || (char.IsUpper(target.Value) && char.IsUpper(target.Value))
+                        (char.IsLower(item.Value) && char.IsLower(target.Value))
+                        || (char.IsUpper(item.Value) && char.IsUpper(target.Value))
                     ))
                 {
                     break;
@@ -85,8 +85,8 @@ public class MoveService : IMoveService
                 if (target is not null
                     &&
                     (
-                        (char.IsLower(target.Value) && char.IsUpper(target.Value))
-                        || (char.IsLower(target.Value) && char.IsUpper(target.Value))
+                        (char.IsLower(item.Value) && char.IsUpper(target.Value))
+                        || (char.IsUpper(item.Value) && char.IsLower(target.Value))
                     ))
                 {
                     if (allowAttack)

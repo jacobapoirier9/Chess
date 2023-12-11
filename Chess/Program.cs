@@ -154,16 +154,20 @@ public class GameService
         DisplayServiceQuickDraw(fen, new Point(7, 2));
     }
 
+    private void RunVisualQueenMovesTest()
+    {
+        var fen = _fenStringService.ParseFenString(Constants.StartingFenString);
+
+        fen.Grid.ForceSwap(new Point(1, 7), new Point(3, 7));
+        fen.Grid.ForceSwap(new Point(6, 4), new Point(4, 4));
+
+        DisplayServiceQuickDraw(fen, new Point(7, 3));
+    }
+
     [Surface("start-test")]
     public void StartTest()
     {
-        var fen = _fenStringService.ParseFenString("r2q4/8/8/8/8/8/8/8 b QKqk - 8 5");
-        _displayService.Draw(fen);
-
-        DisplayServiceQuickDraw(fen, "d8");
-
-
-        GameLoop();
+        RunVisualQueenMovesTest();
         return;
     }
 
